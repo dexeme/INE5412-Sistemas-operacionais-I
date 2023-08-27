@@ -23,7 +23,7 @@ private:
 class File {
 public:
     File() {
-        myfile.open("/entrada/entrada.txt");
+        myfile.open("entrada/entrada.txt");
         if (!myfile.is_open()) {
             cout << "Erro ao abrir o arquivo!\n";
         }
