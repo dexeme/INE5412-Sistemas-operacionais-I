@@ -1,6 +1,8 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
+#include "../headers/file.h"
+
 #include <iostream>
 
 class ProcessParams
@@ -17,3 +19,5 @@ private:
 	int duration;
 	int priority;
 };
+
+#endif
