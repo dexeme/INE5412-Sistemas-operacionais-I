@@ -10,7 +10,7 @@ ProcessParams::ProcessParams(int c, int d, int p, int i) {
     creation_time = c;
     duration = d;
     priority = p;
-    pid = i
+    pid = i;
     running_time = 0;
     finish_time = 0;
     state = 0; // 0 = criado e esperando (--), 1 = execução (##), 2 = acabou ou não começou (' ')

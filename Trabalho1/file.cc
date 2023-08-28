@@ -32,7 +32,7 @@ void File::read_file() {
         return;
     }
     while (myfile >> a >> b >> c) {
-        ProcessParams *p = new ProcessParams(a, b, c);
+        ProcessParams *p = new ProcessParams(a, b, c, size(processes));
         processes.push_back(p);
     }
     cout << "Quantidade de processos lidos do arquivo: " << processes.size() << endl;
@@ -43,6 +43,7 @@ void File::print_processes_params() {
         cout << "Process: CreationTime=" << process->getCreationTime()
              << " Duration=" << process->getDuration()
              << " Priority=" << process->getPriority()
+             << " PID=" << process->getPid()
              << endl;
     }
 }
