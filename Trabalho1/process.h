@@ -8,10 +8,10 @@
 class ProcessParams
 {
 public:
-	ProcessParams(int c, int d, int p, pid_t pid);
+	ProcessParams(int c, int d, int p, int pid);
 
     // Get pid
-    pid_t getPid();
+    int getPid();
 
 	// Get creation time
     int getCreationTime();
@@ -32,7 +32,7 @@ public:
 	int getPriority();
 
 private:
-    pid_t pid;
+    int pid;
     int creation_time;
     int running_time;
     int finish_time;
