@@ -3,13 +3,15 @@
 #include <string>
 #include <vector>
 #include <unistd.h>
-
-#include "kernel.cpp"
-#include "kernel.h"
+#include <algorithm>
 
 using namespace std;
 
-int main() {
-    Kernel kernel;
-    kernel.start();
+class SJF : public Scheduler {
+public:
+    SJF() {}
+
+    ~SJF() {}
+
+    void execute() {}
 }

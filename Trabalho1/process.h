@@ -6,16 +6,18 @@
 #include <vector>
 
 
-enum ProcessState{
-    PRONTO,
-    EXECUTANDO,
-    BLOQUEADO
+enum ProcessState {
+    NEW,
+    READY,
+    RUNNING,
+    WAITING,
+    TERMINATED
 };
 
-class ProcessParams
+class Process
 {
 public:
-	ProcessParams(int c, int d, int p, int pid);
+	Process(int c, int d, int p, int pid);
 
     // Get pid
     int getPid() const;
@@ -47,12 +49,12 @@ public:
 private:
     int pid;
     int creation_time;
+    int duration;
+    int priority;
+    ProcessState state;
     int running_time;
     int remaining_time;
     int finish_time;
-    int duration;
-    ProcessState state;
-    int priority;
 };
 
 #endif

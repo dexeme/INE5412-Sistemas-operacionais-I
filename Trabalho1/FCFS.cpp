@@ -4,12 +4,15 @@
 #include <vector>
 #include <unistd.h>
 
-#include "kernel.cpp"
-#include "kernel.h"
-
 using namespace std;
 
-int main() {
-    Kernel kernel;
-    kernel.start();
+class FCFS : public Scheduler {
+public:
+    FCFS() {}
+
+    ~FCFS() {}
+
+    void virtual execute() {
+
+    }
 }

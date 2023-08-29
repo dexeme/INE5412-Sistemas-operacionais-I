@@ -4,47 +4,20 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <queue>
 
 #include "process.h"
-#include "INE5412.h"
+#include "CPU.h"
 
 using namespace std;
 
 class Scheduler{
-
-protected:
-
-    vector<ProcessParams> listaDeProcessos;
-    INE5412 cpu;
-    int context_switch;
+private:
+    queue<Process> ready_queue;
 
 public:
-
-    Scheduler() {}
-
-    ~Scheduler() {}
-
-
-    void setListaDeProcessos(vector<ProcessParams> listaDeProcessos) {
-        this->listaDeProcessos = listaDeProcessos;
-
-    }
-
-    ProcessParams getNextProcess() {
-    }
-
-    void start_scheduler() {
-        while (true) {
-            ProcessParams processo = getNextProcess();
-            if (processo.getPid() == -1) {
-                break;
-            }
-            cout << "Executando processo " << processo.getPid() << endl;
-        }
-    }
-
-    // Pega o próximo processo a ser executado
-    
+    void add_process(Process process);
+    virtual void execute() = 0;
 };
 
 #endif

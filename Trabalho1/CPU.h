@@ -1,5 +1,5 @@
-#ifndef INE5412_H
-#define INE5412_H
+#ifndef CPU_H
+#define CPU_H
 
 #include <iostream>
 #include <string>
@@ -10,7 +10,7 @@
 using namespace std;
 
 // Além disso, o programa de simulação deve abstrair o contexto de um processador (CPU) hipotético
-// chamado INE5412 que possui 6 registradores de propósito geral, SP (stack pointer), PC (program
+// chamado CPU que possui 6 registradores de propósito geral, SP (stack pointer), PC (program
 // counter) e ST (status), todos com 64 bits. Desta forma, cada abstração de processo também deve ter
 // um contexto (como implementar o contexto de forma a permitir a mudança de processador para a
 // abstração processo?). O programa de simulação deve então realizar a troca de contexto (salvar e
@@ -19,18 +19,13 @@ using namespace std;
 
 
 
-class INE5412 {
-    private:
-        int reg[6];
-        int pc;
-        int sp;
-        int st;
+class CPU {
     public:
-        INE5412();
-        ~INE5412();
-        // void salvarContexto(ProcessParams processo);
-        // void restaurarContexto(ProcessParams processo);
-        void start(string scheduler);
+        CPU();
+        ~CPU();
+        void save_context(Process processo);
+        void restore_context(Process processo);
+        void run_process(Process processo);
 };
 
 #endif

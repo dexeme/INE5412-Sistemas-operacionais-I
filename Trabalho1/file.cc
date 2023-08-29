@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include "file.h"
-#include "process.h"
+#include "process_params.h"
 
 using namespace std;
 
@@ -16,8 +16,7 @@ File::File() {
 
 File::~File() {
     for (unsigned int i = 0; i < processes.size(); i++) {
-        ProcessParams *p = processes[i];
-        delete p;
+        ProcessParams p = processes[i];
     }
     if (myfile.is_open()) {
         cout << "Fechando arquivo!" << endl;
@@ -25,34 +24,17 @@ File::~File() {
     }
 }
 
-vector<ProcessParams*> File::read_file() {
+vector<ProcessParams> File::read_file() {
     int a, b, c;
     if (!myfile.is_open()) {
         cout << "Arquivo não está aberto!" << endl;
         return processes;
     }
     while (myfile >> a >> b >> c) {
-        ProcessParams *p = new ProcessParams(a, b, c, size(processes));
-        processes.push_back(p);
+        ProcessParams *p = new ProcessParams(a, b, c);
+        processes.push_back(*p);
     }
     cout << "Quantidade de processos lidos do arquivo: " << processes.size() << endl;
     return processes;
 }
 
-// Get processes
-const vector<ProcessParams*> File::getProcesses() {
-    return processes;
-}
-
-// Printa os parâmetros
-void File::print_processes_params() {
-    for (const auto& process : processes) {
-        cout << "Process: CreationTime=" << process->getCreationTime()
-             << " Duration=" << process->getDuration()
-             << " Priority=" << process->getPriority()
-             << " PID=" << process->getPid()
-             << " State=" << process->getState()
-             << " RemainingTime=" << process->getRemainingTime()
-             << endl;
-    }
-}

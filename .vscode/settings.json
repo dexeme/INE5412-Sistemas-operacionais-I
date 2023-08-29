@@ -9,6 +9,8 @@
         "string_view": "cpp",
         "initializer_list": "cpp",
         "iostream": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "fstream": "cpp",
+        "iosfwd": "cpp"
     }
 }

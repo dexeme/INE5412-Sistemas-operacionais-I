@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "process.h"
+#include "process_params.h"
 
 using namespace std;
 
@@ -14,12 +14,10 @@ class File
 public:
     File();
     ~File();
-    vector<ProcessParams*> read_file();
-    void print_processes_params();
-    const vector<ProcessParams*> getProcesses();
+    vector<ProcessParams> read_file();
 
 private:
-    vector<ProcessParams*> processes;
+    vector<ProcessParams> processes;
     ifstream myfile;
 };
 
