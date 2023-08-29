@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Process::Process(int c, int d, int p, int i) {
+Process::Process(int c, int d, int p) {
     pid = i;
     creation_time = c;
     running_time = 0;

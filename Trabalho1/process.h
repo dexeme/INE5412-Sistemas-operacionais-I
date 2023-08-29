@@ -17,7 +17,11 @@ enum ProcessState {
 class Process
 {
 public:
-	Process(int c, int d, int p, int pid);
+	Process(int c, int d, int p) {
+        this->creation_time = c;
+        this->duration = d;
+        this->priority = p;
+    }
 
     // Get pid
     int getPid() const;
