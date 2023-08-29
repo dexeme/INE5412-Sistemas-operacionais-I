@@ -5,13 +5,20 @@
 #include <string>
 #include <vector>
 
+
+enum ProcessState{
+    PRONTO,
+    EXECUTANDO,
+    BLOQUEADO
+};
+
 class ProcessParams
 {
 public:
 	ProcessParams(int c, int d, int p, int pid);
 
     // Get pid
-    int getPid();
+    int getPid() const;
 
 	// Get creation time
     int getCreationTime();
@@ -19,11 +26,17 @@ public:
     // Get running time
     int getRunningTime();
 
+    // Get remaining time
+    int getRemainingTime();
+
+    // Set remaining time
+    void setRemainingTime(int time);
+
     // Get finish time
     int getFinishTime();
 
 	// Get duration
-    int getDuration();
+    int getDuration() const;
 
     // Get state
     int getState();
@@ -35,9 +48,10 @@ private:
     int pid;
     int creation_time;
     int running_time;
+    int remaining_time;
     int finish_time;
     int duration;
-    int state;
+    ProcessState state;
     int priority;
 };
 

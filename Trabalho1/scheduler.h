@@ -6,24 +6,45 @@
 #include <vector>
 
 #include "process.h"
+#include "INE5412.h"
 
 using namespace std;
 
 class Scheduler{
-    Escalonador();
 
-    virtual ~Escalonador();
+protected:
 
-    virtual vector<ProcessParams> processes; // Fila de processos
+    vector<ProcessParams> listaDeProcessos;
+    INE5412 cpu;
+    int context_switch;
 
-    virtual ProcessParams getNextProcess() = 0; // Pega próximo processo a ser executado
+public:
 
-    virtual void addProcess(ProcessParams process) = 0; // Adiciona processo na fila de processos
+    Scheduler() {}
+
+    ~Scheduler() {}
+
+
+    void setListaDeProcessos(vector<ProcessParams> listaDeProcessos) {
+        this->listaDeProcessos = listaDeProcessos;
+
+    }
+
+    ProcessParams getNextProcess() {
+    }
+
+    void start_scheduler() {
+        while (true) {
+            ProcessParams processo = getNextProcess();
+            if (processo.getPid() == -1) {
+                break;
+            }
+            cout << "Executando processo " << processo.getPid() << endl;
+        }
+    }
+
+    // Pega o próximo processo a ser executado
     
-    virtual int calculateTurnAroundTime() = 0; // Calcula o tempo de retorno médio dos processos
+};
 
-    virtual int calculateWaitingTime() = 0; // Calcula o tempo de espera médio dos processos
-
-    virtual int calculaContextSwitch() = 0; // Calcula o número de trocas de contexto
-    
-}
+#endif

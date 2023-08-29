@@ -7,17 +7,18 @@
 using namespace std;
 
 ProcessParams::ProcessParams(int c, int d, int p, int i) {
+    pid = i;
     creation_time = c;
+    running_time = 0;
+    remaining_time = duration;
+    finish_time = 0;
+    state = ProcessState::PRONTO; // Inicia no estado pronto
     duration = d;
     priority = p;
-    pid = i;
-    running_time = 0;
-    finish_time = 0;
-    state = 0; // 0 = criado e esperando (--), 1 = execução (##), 2 = acabou ou não começou (' ')
 }
 
 // Get pid
-int ProcessParams::getPid() {
+int ProcessParams::getPid() const {
     return pid;
 }
 
@@ -31,13 +32,28 @@ int ProcessParams::getRunningTime() {
     return running_time;
 }
 
+// Get remaining time
+int ProcessParams::getRemainingTime() {
+    return remaining_time;
+}
+
+void ProcessParams::setRemainingTime(int time)
+{
+    remaining_time = time;
+}
+
 // Get finish time
 int ProcessParams::getFinishTime() {
     return finish_time;
 }
 
+// Get state
+int ProcessParams::getState() {
+    return state;
+}
+
 // Get duration
-int ProcessParams::getDuration() {
+int ProcessParams::getDuration() const {
     return duration;
 }
 

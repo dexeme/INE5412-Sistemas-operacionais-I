@@ -14,8 +14,9 @@ class File
 public:
     File();
     ~File();
-    void read_file();
+    vector<ProcessParams*> read_file();
     void print_processes_params();
+    const vector<ProcessParams*> getProcesses();
 
 private:
     vector<ProcessParams*> processes;
