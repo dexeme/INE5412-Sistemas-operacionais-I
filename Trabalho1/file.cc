@@ -25,13 +25,13 @@ File::~File() {
 }
 
 vector<ProcessParams> File::read_file() {
-    int a, b, c;
+    int a, b, c, d;
     if (!myfile.is_open()) {
         cout << "Arquivo não está aberto!" << endl;
         return processes;
     }
     while (myfile >> a >> b >> c) {
-        ProcessParams *p = new ProcessParams(a, b, c);
+        ProcessParams *p = new ProcessParams(a, b, c, size(processes)+1);
         processes.push_back(*p);
     }
     cout << "Quantidade de processos lidos do arquivo: " << processes.size() << endl;

@@ -5,23 +5,13 @@
 #include <string>
 #include <vector>
 
+#include "PCB.h"
 
-enum ProcessState {
-    NEW,
-    READY,
-    RUNNING,
-    WAITING,
-    TERMINATED
-};
 
 class Process
 {
 public:
-	Process(int c, int d, int p) {
-        this->creation_time = c;
-        this->duration = d;
-        this->priority = p;
-    }
+	Process(int c, int d, int p, int i);
 
     // Get pid
     int getPid() const;
@@ -59,6 +49,7 @@ private:
     int running_time;
     int remaining_time;
     int finish_time;
+    PCB pcb;
 };
 
 #endif

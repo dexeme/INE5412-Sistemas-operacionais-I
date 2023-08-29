@@ -16,8 +16,8 @@ class Kernel {
         Scheduler* scheduler;
     public:
         Kernel() {}
-        void create_process(ProcessParams params);
-        void start();
+        Process* create_process(ProcessParams params);
+        void start(string scheduler_type);
 };
 
 #endif

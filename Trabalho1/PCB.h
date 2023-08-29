@@ -20,7 +20,7 @@ enum ProcessState {
 
 class PCB {
     private:
-        reg[6];
+        int reg[6];
         int SP;
         int PC;
         int ST;
@@ -30,8 +30,8 @@ class PCB {
         int finish_time;
 
     public:
-        PCB();
-        ~PCB();
+        PCB() {}
+        ~PCB() {}
 
         ProcessState get_state();
         void set_state(ProcessState state);
@@ -47,4 +47,6 @@ class PCB {
 
         int get_ST();
         void set_ST(int value);
-}
+};
+
+#endif

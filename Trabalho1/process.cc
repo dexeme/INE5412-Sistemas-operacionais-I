@@ -3,10 +3,11 @@
 
 #include "process.h"
 #include "file.h"
+#include "PCB.h"
 
 using namespace std;
 
-Process::Process(int c, int d, int p) {
+Process::Process(int c, int d, int p, int i) {
     pid = i;
     creation_time = c;
     running_time = 0;
@@ -14,6 +15,8 @@ Process::Process(int c, int d, int p) {
     finish_time = 0;
     duration = d;
     priority = p;
+    state = NEW;
+    pcb;
 }
 
 // Get pid
