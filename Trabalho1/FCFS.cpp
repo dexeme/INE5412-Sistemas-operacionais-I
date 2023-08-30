@@ -12,7 +12,5 @@ public:
 
     ~FCFS() {}
 
-    void virtual execute() {
-
-    }
+    void virtual execute() {}
 };

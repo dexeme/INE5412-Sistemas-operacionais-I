@@ -11,5 +11,5 @@ using namespace std;
 
 int main() {
     Kernel kernel;
-    kernel.start("FCFS");
+    kernel.start("SJF");
 }

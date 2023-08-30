@@ -39,6 +39,11 @@ void Kernel::start(string scheduler_type) {
         scheduler = new SJF();
         cout << "DEBUG: Iniciando SJF" << endl;
 
+        for (unsigned int i = 0; i < processos.size(); i++) {
+            scheduler->add_process(*processos[i]);
+            cout << "DEBUG: Processo " << processos[i]->getPid() << " adicionado ao escalonador" << endl;
+        }
+
 
     } else {
         cout << "Scheduler não reconhecido!" << endl;
@@ -54,7 +59,7 @@ Process* Kernel::create_process(ProcessParams params) {
 
     Process* processo_novo = new Process(creation_data, priority, duration, pid);
 
-    cout << "DEBUG: Criando processo " << params.get_pid() << endl;
+    cout << "DEBUG: Criando processo " << pid << endl;
 
     // Adiciona o processo na fila de processos
     

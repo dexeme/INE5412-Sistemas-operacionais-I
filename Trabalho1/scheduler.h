@@ -16,8 +16,17 @@ private:
     queue<Process> ready_queue;
 
 public:
-    void add_process(Process process);
+    void add_process(Process process) {
+        ready_queue.push(process);
+    } // recebe processos do kernel
     virtual void execute() = 0;
+
+    queue<Process> get_ready_queue() {
+        return ready_queue;}
+
+        
+
+    
 };
 
 #endif
