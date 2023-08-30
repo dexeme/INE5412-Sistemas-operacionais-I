@@ -40,8 +40,8 @@ void Kernel::start(string scheduler_type) {
         cout << "DEBUG: Iniciando SJF" << endl;
 
         for (unsigned int i = 0; i < processos.size(); i++) {
-            scheduler->add_process(*processos[i]);
             cout << "DEBUG: Processo " << processos[i]->getPid() << " adicionado ao escalonador" << endl;
+            scheduler->add_process(*processos[i]);
         }
 
 

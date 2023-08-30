@@ -13,7 +13,5 @@ public:
 
     ~SJF() {}
 
-    
-
     void execute() {}
 };
