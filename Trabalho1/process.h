@@ -8,6 +8,13 @@
 #include "PCB.h"
 #include "PCB.cpp"
 
+enum ProcessState {
+    NEW,
+    READY,
+    RUNNING,
+    WAITING,
+    TERMINATED
+};
 
 class Process
 {
@@ -50,7 +57,7 @@ private:
     int running_time;
     int remaining_time;
     int finish_time;
-    PCB pcb;
+    
 };
 
 #endif

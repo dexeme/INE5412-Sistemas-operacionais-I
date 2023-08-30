@@ -3,7 +3,6 @@
 
 #include "process.h"
 #include "file.h"
-#include "PCB.h"
 
 using namespace std;
 
@@ -15,8 +14,7 @@ Process::Process(int c, int d, int p, int i) {
     finish_time = 0;
     duration = d;
     priority = p;
-    state = NEW;
-    pcb;
+    state = ProcessState::NEW;
 }
 
 // Get pid
