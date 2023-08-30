@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "PCB.h"
+#include "PCB.cpp"
 
 
 class Process

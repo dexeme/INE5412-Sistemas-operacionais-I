@@ -18,6 +18,8 @@ class Kernel {
         Kernel() {}
         Process* create_process(ProcessParams params);
         void start(string scheduler_type);
+        void save_context(Process processo);
+        void restore_context(Process processo);
 };
 
 #endif

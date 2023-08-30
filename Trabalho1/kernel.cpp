@@ -33,6 +33,7 @@ void Kernel::start(string scheduler_type) {
 
     if (scheduler_type == "FCFS") {
         scheduler = new FCFS();
+
         cout << "DEBUG: Iniciando FCFS" << endl;
 
 
@@ -53,7 +54,7 @@ Process* Kernel::create_process(ProcessParams params) {
     int duration = params.get_duration();
     int pid = params.get_pid();
 
-    PCB* pcb = new PCB();
+    //PCB* pcb = new PCB();
     
 
     Process* processo_novo = new Process(creation_data, priority, duration, pid);
@@ -64,3 +65,7 @@ Process* Kernel::create_process(ProcessParams params) {
     
     return processo_novo;
     }
+
+void Kernel::save_context(Process processo) {}
+
+void Kernel::restore_context(Process processo) {}

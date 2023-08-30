@@ -3,35 +3,17 @@
 #include <string>
 #include <vector>
 
-#include "file.h"
-#include "process.h"
+#include "PCB.h"
 
 using namespace std;
 
-PCB::PCB(int reg[6], int SP, int PC, int ST, ProcessState state, int running_time, int remaining_time, int finish_time) {}
-
-PCB::~PCB() {}
-
-ProcessState PCB::get_state() {}
-void PCB::set_state(ProcessState state) {}
-
-int PCB::get_reg(int reg) {}
-void PCB::set_reg(int reg, int value) {}
-
-int PCB::get_SP() {}
-void PCB::set_SP(int value) {}
-
-int PCB::get_PC() {}
-void PCB::set_PC(int value) {}
-
-int PCB::get_ST() {}
-void PCB::set_ST(int value) {}
-
-int PCB::get_running_time() {}
-void PCB::set_running_time(int value) {}
-
-int PCB::get_remaining_time() {}
-void PCB::set_remaining_time(int value) {}
-
-int PCB::get_finish_time() {}
-void PCB::set_finish_time(int value) {}
+PCB::PCB(int r, int sp, int pc, int st, ProcessState processState) {
+    reg = reg;
+    SP = sp;
+    PC = pc;
+    ST = st;
+    state = processState;
+    running_time = 0;
+    remaining_time = duration;
+    finish_time = 0;
+}

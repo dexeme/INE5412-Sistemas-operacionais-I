@@ -18,44 +18,46 @@ enum ProcessState {
     TERMINATED
 };
 
-class PCB {
-    private:
-        int reg[6];
-        int SP;
-        int PC;
-        int ST;
-        ProcessState state;
-        int running_time;
-        int remaining_time;
-        int finish_time;
+class PCB 
+{
+public:
+    PCB(int r, int sp, int pc, int st, ProcessState processState);
+    ~PCB();
 
-    public:
-        PCB();
-        ~PCB();
+    ProcessState get_state();
+    void set_state(ProcessState state);
 
-        ProcessState get_state();
-        void set_state(ProcessState state);
+    int get_reg(int reg);
+    void set_reg(int reg, int value);
 
-        int get_reg(int reg);
-        void set_reg(int reg, int value);
+    int get_SP();
+    void set_SP(int value);
 
-        int get_SP();
-        void set_SP(int value);
+    int get_PC();
+    void set_PC(int value);
 
-        int get_PC();
-        void set_PC(int value);
+    int get_ST();
+    void set_ST(int value);
 
-        int get_ST();
-        void set_ST(int value);
+    int get_running_time() { return running_time;}
+    void set_running_time(int value);
 
-        int get_running_time();
-        void set_running_time(int value);
+    int get_remaining_time();
+    void set_remaining_time(int value);
 
-        int get_remaining_time();
-        void set_remaining_time(int value);
+    int get_finish_time();
+    void set_finish_time(int value);
 
-        int get_finish_time();
-        void set_finish_time(int value);
+private:
+    int reg[6];
+    int SP;
+    int PC;
+    int ST;
+    ProcessState state;
+    int running_time;
+    int remaining_time;
+    int finish_time;
+
 };
 
 #endif
