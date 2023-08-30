@@ -8,7 +8,7 @@
 
 using namespace std;
 
-PCB::PCB() {}
+PCB::PCB(int reg[6], int SP, int PC, int ST, ProcessState state, int running_time, int remaining_time, int finish_time) {}
 
 PCB::~PCB() {}
 

@@ -30,8 +30,8 @@ class PCB {
         int finish_time;
 
     public:
-        PCB() {}
-        ~PCB() {}
+        PCB();
+        ~PCB();
 
         ProcessState get_state();
         void set_state(ProcessState state);
@@ -47,6 +47,15 @@ class PCB {
 
         int get_ST();
         void set_ST(int value);
+
+        int get_running_time();
+        void set_running_time(int value);
+
+        int get_remaining_time();
+        void set_remaining_time(int value);
+
+        int get_finish_time();
+        void set_finish_time(int value);
 };
 
 #endif

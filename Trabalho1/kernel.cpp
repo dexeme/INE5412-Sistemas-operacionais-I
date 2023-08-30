@@ -12,6 +12,8 @@
 #include "file.cc"
 #include "FCFS.cpp"
 #include "SJF.cpp"
+#include "PCB.h"
+#include "PCB.cpp"
 
 
 
@@ -50,6 +52,9 @@ Process* Kernel::create_process(ProcessParams params) {
     int priority = params.get_priority();
     int duration = params.get_duration();
     int pid = params.get_pid();
+
+    PCB* pcb = new PCB();
+    
 
     Process* processo_novo = new Process(creation_data, priority, duration, pid);
 
