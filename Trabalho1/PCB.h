@@ -24,8 +24,9 @@ public:
     PCB(int r, int sp, int pc, int st, ProcessState processState);
     ~PCB();
 
-    ProcessState get_state();
-    void set_state(ProcessState state);
+    public:
+        PCB() {}
+        ~PCB() {}
 
     int get_reg(int reg);
     void set_reg(int reg, int value);
@@ -39,25 +40,8 @@ public:
     int get_ST();
     void set_ST(int value);
 
-    int get_running_time() { return running_time;}
-    void set_running_time(int value);
-
-    int get_remaining_time();
-    void set_remaining_time(int value);
-
-    int get_finish_time();
-    void set_finish_time(int value);
-
-private:
-    int reg[6];
-    int SP;
-    int PC;
-    int ST;
-    ProcessState state;
-    int running_time;
-    int remaining_time;
-    int finish_time;
-
+        int get_ST();
+        void set_ST(int value);
 };
 
 #endif
