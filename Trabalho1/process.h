@@ -48,6 +48,9 @@ public:
 	// Get priority
 	int getPriority();
 
+    // Get PCB
+    PCB* getPCB();
+
 private:
     int pid;
     int creation_time;
@@ -57,7 +60,7 @@ private:
     int running_time;
     int remaining_time;
     int finish_time;
-    
+    PCB *pcb;
 };
 
 #endif
