@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "PCB.h"
-#include "PCB.cpp"
+#include "context.h"
+#include "context.cpp"
 
 enum ProcessState {
     NEW,
@@ -48,8 +48,8 @@ public:
 	// Get priority
 	int getPriority();
 
-    // Get PCB
-    PCB* getPCB();
+    // Get context
+    Context* getContext();
 
 private:
     int pid;
@@ -60,7 +60,7 @@ private:
     int running_time;
     int remaining_time;
     int finish_time;
-    PCB *pcb;
+    Context *context;
 };
 
 #endif

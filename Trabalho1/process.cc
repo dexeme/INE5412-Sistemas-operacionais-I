@@ -3,7 +3,7 @@
 
 #include "process.h"
 #include "file.h"
-#include "PCB.h"
+#include "context.h"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ Process::Process(int c, int d, int p, int i) {
     duration = d;
     priority = p;
     state = ProcessState::NEW;
-    pcb = new PCB(0, 0, 0, 0);
+    context = new Context(0, 0, 0, 0);
 }
 
 // Get pid

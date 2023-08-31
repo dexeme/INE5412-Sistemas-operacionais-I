@@ -1,5 +1,5 @@
-#ifndef PCB_H
-#define PCB_H
+#ifndef CONTEXT_H
+#define CONTEXT_H
 
 #include <iostream>
 #include <fstream>
@@ -12,11 +12,11 @@ using namespace std;
 
 
 
-class PCB 
+class Context 
 {
 public:
-    PCB(int r, int sp, int pc, int st);
-    ~PCB();
+    Context(int r, int sp, int pc, int st);
+    ~Context();
 
     int get_reg(int reg);
 
