@@ -24,21 +24,13 @@ public:
 
     int get_PC();
 
-    int get_running_time();
-
-    int get_remaining_time();
-
-    int get_finish_time();
-
+    int get_ST();
 
 private:
     int reg[6];
     int SP;
     int PC;
     int ST;
-    int running_time;
-    int remaining_time;
-    int finish_time;
 };
 
 #endif
