@@ -12,6 +12,8 @@
 #include "file.cc"
 #include "FCFS.cpp"
 #include "SJF.cpp"
+#include "ARM.cpp"
+#include "CPU.h"
 
 
 
@@ -30,18 +32,19 @@ void Kernel::start(string scheduler_type) {
     }
 
     if (scheduler_type == "FCFS") {
-        scheduler = new FCFS();
-
         cout << "DEBUG: Iniciando FCFS" << endl;
-
-
+        ARM cpu;
+        FCFS scheduler(cpu);
+        
     } else if (scheduler_type == "SJF") {
-        scheduler = new SJF();
         cout << "DEBUG: Iniciando SJF" << endl;
+        ARM arm(cpu);
+        SJF scheduler(cpu);
+
 
         for (unsigned int i = 0; i < processos.size(); i++) {
             cout << "DEBUG: Processo " << processos[i]->getPid() << " adicionado ao escalonador" << endl;
-            scheduler->add_process(*processos[i]);
+            scheduler.add_process(*processos[i]);
         }
 
 
