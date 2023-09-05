@@ -8,7 +8,7 @@
 using namespace std;
 
 Context::Context(int r, int sp, int pc, int st) {
-    cout << "context criado" << endl;
+    cout << "DEBUG: context criado" << endl;
     reg[6] = r;
     SP = sp;
     PC = pc;
@@ -17,10 +17,10 @@ Context::Context(int r, int sp, int pc, int st) {
 
 Context::~Context() {}
 
-int Context::get_reg(int reg) {}
+int Context::get_reg(int reg) {return this->reg[reg];}
 
-int Context::get_SP() {}
+int Context::get_SP() {return SP;}
 
-int Context::get_PC() {}
+int Context::get_PC() {return PC;}
 
-int Context::get_ST() {}
+int Context::get_ST() {return ST;}
