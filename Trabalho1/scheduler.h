@@ -24,11 +24,11 @@ public:
     bool is_ready_queue_empty() {
         return ready_queue.empty();}
 
+    void clear_ready_queue() {
+        ready_queue = queue<Process>();}
+
     void add_process(Process process) {
         ready_queue.push(process);
-        cout << "DEBUG: Processo " << process.getPid() << " adicionado a fila de prontos" << endl;
-        organize_ready_queue();
-        cout << "DEBUG: Organizando processo " << process.getPid() << " de acordo com algoritmo" << endl;
     }
 
     virtual void execute() = 0;
