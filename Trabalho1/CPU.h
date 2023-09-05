@@ -21,12 +21,13 @@ using namespace std;
 
 class CPU {
     public:
-        CPU();
-        ~CPU();
+
+        CPU() {}
         virtual void run_process(Process processo) = 0;
         virtual void save_context(Process processo) = 0;
         virtual void restore_context(Process processo) = 0;
         virtual void switch_context(Process processo_atual, Process processo_novo) = 0;
+        virtual ~CPU() {}
 };
 
 #endif
