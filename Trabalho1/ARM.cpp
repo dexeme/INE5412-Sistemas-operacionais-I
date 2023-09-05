@@ -12,13 +12,13 @@ using namespace std;
 
 class ARM : public CPU {
 public:
-    ARM() : CPU() {}
+    ARM() {}
 
     ~ARM() {}
 
-    void virtual run_process(Process processo) {}
-    void virtual save_context(Process processo) {}
-    void virtual restore_context(Process processo) {}
-    void virtual switch_context(Process processo_atual, Process processo_novo) {}
+    void run_process(Process processo) override {}
+    void save_context(Process processo) override {}
+    void restore_context(Process processo) override {}
+    void switch_context(Process processo_atual, Process processo_novo) override {}
     
 };
