@@ -45,12 +45,12 @@ public:
         new_queue.push(process);
         cout << "DEBUG: Processo " << process.getPid() << " adicionado à fila de novos!" << endl;
         vector<Process> processos_organizados = organize_ready_queue(new_queue);
+        clear_ready_queue();
         for (unsigned int i = 0; i < processos_organizados.size(); i++) {
-            Process processo = processos_organizados[i];
-            processo.setState(READY);
-            ready_queue.push(processo);
-            cout << "DEBUG: Processo " << processo.getPid() << " adicionado à fila de prontos!" << endl;
-        }}
+            ready_queue.push(processos_organizados[i]);
+            cout << "DEBUG: Processo " << processos_organizados[i].getPid() << " adicionado à fila de prontos!" << endl;
+        }
+    }
 
     virtual bool check_preemption(Process processo_atual) = 0;
 
