@@ -14,29 +14,34 @@ public:
     ~SJF() {}
 
     bool execute() {
-        printa_fila_de_prontos();
-        // Se não há processo em execução, pega o primeiro da fila de prontos
         Process* processo_atual = get_current_process();
         queue<Process>& fila_de_prontos = get_ready_queue();
-        if (get_current_process() == nullptr) {
+        
+        if (processo_atual == nullptr) {
+            cout << "DEBUG: Processo atual é nulo" << endl;
             if (is_ready_queue_empty()) {
-                printa_fila_de_prontos();
-                return true;
+                cout << "DEBUG: Fila de prontos está vazia" << endl;
+                return false;
             }
         }
         if (processo_atual != nullptr && !processo_atual->is_finished()) {
+            cout << "DEBUG: Processo atual não é nulo e não está finalizado" << endl;
             if (check_preemption(*processo_atual)) {
+                cout << "DEBUG: Processo atual é preemptado" << endl;
                 switch_process(*processo_atual, get_next_process());
                 return true;
             }
             if (processo_atual->getRemainingTime() == get_next_process().getRemainingTime()) {
+                cout << "DEBUG: Processo atual e próximo processo tem o mesmo tempo restante" << endl;
                 run_process(*processo_atual, get_cpu());
                 return true;
             }
         }
         if (!is_ready_queue_empty() && processo_atual != nullptr && processo_atual->getState() == RUNNING) {
+            cout << "DEBUG: Processo atual não é nulo e está rodando" << endl;
             run_process(*processo_atual, get_cpu());
-            if (processo_atual->is_finished()) {
+            if (processo_atual->getRemainingTime() == 0) {
+                cout << "DEBUG: Processo atual terminou" << endl;
                 finish_process(*processo_atual);
                 return !is_ready_queue_empty();
             }
@@ -45,19 +50,19 @@ public:
         return true;
     }
 
-    vector<Process> organize_ready_queue(queue<Process> new_queue) {
-        vector<Process> organized_queue;
-        while (!new_queue.empty()) {
-            organized_queue.push_back(new_queue.front());
-            new_queue.pop();
+    void organize_ready_queue(queue<Process> ready_queue) {
+        vector<Process> processos;
+        while (!ready_queue.empty()) {
+            processos.push_back(ready_queue.front());
+            ready_queue.pop();
         }
-        sort(organized_queue.begin(), organized_queue.end(), [](Process& a, Process& b) {
+        sort(processos.begin(), processos.end(), [](Process& a, Process& b) {
             return a.getDuration() < b.getDuration();
         });
-
-        cout << "DEBUG: Processo na frente da fila de prontos: " << get_ready_queue().front().getPid() << endl;
-        printa_fila_de_prontos();
-        return organized_queue;
+        for (Process processo : processos) {
+            ready_queue.push(processo);
+        }
+        set_ready_queue(ready_queue);
     }
 
     bool check_preemption(Process& processo_atual) {

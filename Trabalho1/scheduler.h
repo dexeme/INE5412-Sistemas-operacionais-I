@@ -15,6 +15,7 @@ class Scheduler{
 private:
     queue<Process> new_queue;
     queue<Process> ready_queue;
+    queue<Process> finished_queue;
     Process* current_process;
     CPU& cpu;
 
@@ -36,6 +37,14 @@ public:
     Process* get_current_process() {
         return current_process;}
 
+    // Remove o processo da fila de prontos e o coloca na fila de finalizados
+    void finish_process(Process& processo) {
+        processo.setState(FINISHED);
+        cout << "DEBUG: Processo " << processo.getPid() << " finalizado." << endl;
+        finished_queue.push(processo);
+        ready_queue.pop();
+    }
+
 
 
     void set_current_process(Process* current_process) {
@@ -55,12 +64,10 @@ public:
 
 
     void add_process(Process& process) {
-        new_queue.push(process);
-        vector<Process> organized_queue = organize_ready_queue(new_queue);
-        clear_ready_queue();
-        for (const auto& p : organized_queue) {
-            ready_queue.push(p);
-        }
+        process.setState(READY);
+        ready_queue.push(process);
+        organize_ready_queue(ready_queue);
+        printa_fila_de_prontos();
     }
 
     virtual bool check_preemption(Process& processo_atual) = 0;
@@ -77,9 +84,10 @@ public:
     void run_process(Process& processo, CPU& cpu) {
         processo.setState(RUNNING);
         processo.setRemainingTime(processo.getRemainingTime() - 1);
+        cout << "DEBUG: Processo " << processo.getPid() << " rodando." << endl;
     }
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
-    virtual vector<Process> organize_ready_queue(queue<Process> new_queue) = 0;
+    virtual void organize_ready_queue(queue<Process> new_queue) = 0;
 
 
     void switch_process(Process& processo_atual, Process& processo_novo) {
