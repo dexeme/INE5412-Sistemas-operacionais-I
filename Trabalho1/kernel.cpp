@@ -19,8 +19,12 @@
 
 using namespace std;
 
-void Kernel::start(string scheduler_type) {
+void Kernel::start() {
     cout << "DEBUG: Kernel iniciado" << endl;
+    create_processes();
+    start_scheduler("SJF");}
+
+void Kernel::create_processes() {
     vector<Process> processos;
     File file;
     vector<ProcessParams> processes_lidos = file.read_file();
@@ -29,17 +33,17 @@ void Kernel::start(string scheduler_type) {
         Process processo_novo = create_process(p);
         processos.push_back(processo_novo);
         cout << "DEBUG: Processo " << p.get_pid() << " criado" << endl;
-        cout << "DEBUG: Tempo de duracao do processo " << p.get_pid() << ": " << p.get_duration() << endl;
     }
+    
+}
 
+void Kernel::start_scheduler(string scheduler_type) {
     Scheduler* scheduler = nullptr;
-
     if (scheduler_type == "FCFS") {
         cout << "DEBUG: Iniciando FCFS" << endl;
         ARM cpu = ARM();
         scheduler = new FCFS(cpu);
 
-        
     } else if (scheduler_type == "SJF") {
         cout << "DEBUG: Iniciando SJF" << endl;
         ARM cpu = ARM();
@@ -50,12 +54,10 @@ void Kernel::start(string scheduler_type) {
             scheduler->add_process(processos[i]);
             scheduler->organize_ready_queue();
         }
-
-
-    } else {
-        cout << "Scheduler não reconhecido!" << endl;
-        return;
-    }
+        } else {
+            cout << "Scheduler não reconhecido!" << endl;
+            return;
+        }
 }
 
 Process Kernel::create_process(ProcessParams params) {
@@ -67,8 +69,6 @@ Process Kernel::create_process(ProcessParams params) {
     Process processo_novo = Process(creation_data, duration, priority, pid);
 
     cout << "DEBUG: Criando processo " << pid << endl;
-
-    // Adiciona o processo na fila de processos
     
     return processo_novo;
     }
