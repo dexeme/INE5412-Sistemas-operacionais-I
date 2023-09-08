@@ -14,48 +14,36 @@ public:
     ~SJF() {}
 
     bool execute() {
-        Process processo_atual = get_current_process(); // Copia o processo atual em uma variável local
-        queue<Process> fila_de_prontos = get_ready_queue(); // Copia a fila de prontos em uma variável local
-
-        cout << "DEBUG: Processo atual: " << processo_atual.getPid() << endl;
-        cout << "DEBUG: Processo atual tem duração: " << processo_atual.getDuration() << endl;
-        cout << "DEBUG: Processo atual tem tempo restante: " << processo_atual.getRemainingTime() << endl;
-
-        if (fila_de_prontos.empty()) {
-            cout << "DEBUG: Fila de prontos vazia!" << endl;
-            return false;
+        printa_fila_de_prontos();
+        // Se não há processo em execução, pega o primeiro da fila de prontos
+        Process* processo_atual = get_current_process();
+        queue<Process>& fila_de_prontos = get_ready_queue();
+        if (get_current_process() == nullptr) {
+            if (is_ready_queue_empty()) {
+                printa_fila_de_prontos();
+                return true;
+            }
+        }
+        if (processo_atual != nullptr && !processo_atual->is_finished()) {
+            if (check_preemption(*processo_atual)) {
+                switch_process(*processo_atual, get_next_process());
+                return true;
+            }
+            if (processo_atual->getRemainingTime() == get_next_process().getRemainingTime()) {
+                run_process(*processo_atual, get_cpu());
+                return true;
+            }
+        }
+        if (!is_ready_queue_empty() && processo_atual != nullptr && processo_atual->getState() == RUNNING) {
+            run_process(*processo_atual, get_cpu());
+            if (processo_atual->is_finished()) {
+                finish_process(*processo_atual);
+                return !is_ready_queue_empty();
+            }
         }
 
-        // Se o processo atual não foi finalizado, verifica se há processos na fila de prontos
-        // Se houver, verifica se o processo atual tem duração maior que o processo na frente da fila de prontos
-        // Se tiver, interrompe o processo atual e coloca na fila de prontos
-        if (processo_atual.getRemainingTime() > get_next_process().getRemainingTime()) {
-            cout << "DEBUG: Processo " << processo_atual.getPid() << " interrompido!" << endl;
-            processo_atual.setState(READY);
-            fila_de_prontos.push(processo_atual);
-            set_ready_queue(fila_de_prontos);
-            return true;
-        }
-
-        // Se o processo atual foi finalizado, verifica se há processos na fila de prontos
-        if (processo_atual.is_finished()) {
-            cout << "DEBUG: Processo " << processo_atual.getPid() << " finalizado!" << endl;
-
-            fila_de_prontos.pop(); // Remove o processo finalizado da fila de prontos
-            
-            set_ready_queue(fila_de_prontos); // Atualiza a fila de prontos
-            return !is_ready_queue_empty(); // Retorna true se ainda há processos na fila de prontos
-            }
-
-            // Se o processo atual não foi finalizado e não foi interrompido, executa o processo
-            // e decrementa o tempo restante do processo
-            if (!is_ready_queue_empty() && processo_atual.getState() == RUNNING) {
-                processo_atual.setRemainingTime(processo_atual.getRemainingTime() - 1);
-                cout << "DEBUG: Processo " << processo_atual.getPid() << " executando!" << endl;
-            }
-            
-}
-
+        return true;
+    }
 
     vector<Process> organize_ready_queue(queue<Process> new_queue) {
         vector<Process> organized_queue;
@@ -63,23 +51,33 @@ public:
             organized_queue.push_back(new_queue.front());
             new_queue.pop();
         }
-        sort(organized_queue.begin(), organized_queue.end(), [](Process a, Process b) {
+        sort(organized_queue.begin(), organized_queue.end(), [](Process& a, Process& b) {
             return a.getDuration() < b.getDuration();
         });
-        
-        cout << "DEBUG: ready queue size: " << get_ready_queue().size() << endl;
+
         cout << "DEBUG: Processo na frente da fila de prontos: " << get_ready_queue().front().getPid() << endl;
-        cout << "DEBUG: new queue size: " << new_queue.size() << endl;
+        printa_fila_de_prontos();
         return organized_queue;
     }
 
-    bool check_preemption(Process processo_atual) {
+    bool check_preemption(Process& processo_atual) {
         if (is_ready_queue_empty()) {
             return false;
         }
 
-        Process processo_na_frente = get_ready_queue().front();
+        Process& processo_na_frente = get_ready_queue().front();
         return processo_atual.getDuration() > processo_na_frente.getDuration();
     }
+
+    void finish_process(Process& processo) {
+        processo.setState(FINISHED);
+        set_current_process(nullptr);
+        cout << "DEBUG: Processo " << processo.getPid() << " finalizado!" << endl;
+        // Tira o processo da fila de prontos
+        queue<Process> fila_de_prontos = get_ready_queue();
+        fila_de_prontos.pop();
+        set_ready_queue(fila_de_prontos);
+    }
 };
+
 

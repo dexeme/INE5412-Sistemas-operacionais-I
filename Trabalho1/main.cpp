@@ -31,9 +31,13 @@ using namespace std;
             }
 
             current_time++;
+
             
-            cout << "DEBUG: Tempo atual: " << current_time << endl;
+            cout << current_time << endl;
             sleep(1);
+
+            // Verifique se o escalonador terminou de executar todos os processos
+            kernel.scheduler->execute();
         }
 
         return 0;

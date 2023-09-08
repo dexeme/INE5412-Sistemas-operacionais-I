@@ -11,7 +11,7 @@ Process::Process(int c, int d, int p, int i) {
     pid = i;
     creation_time = c;
     running_time = 0;
-    remaining_time = duration;
+    remaining_time = d;
     finish_time = 0;
     duration = d;
     priority = p;
@@ -81,7 +81,7 @@ int Process::getPriority() {
 
 // Get is finished
 bool Process::is_finished() {
-    return remaining_time <= 0;
+    return remaining_time = 0;
 }
 
 

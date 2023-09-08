@@ -41,7 +41,7 @@ void Kernel::create_scheduler(string scheduler_type) {
         cout << "DEBUG: Iniciando " << scheduler_type << endl;
         ARM cpu = ARM();
         if (scheduler_type == "FCFS") {
-            scheduler = new FCFS(cpu);
+            
         } else {
             scheduler = new SJF(cpu);
         }
@@ -68,6 +68,7 @@ Process Kernel::create_process(ProcessParams params) {
 
     Process processo_novo = Process(creation_data, duration, priority, pid);
     cout << "DEBUG: Criando processo " << pid << endl;
+    processo_novo.setRemainingTime(duration);
     return processo_novo;
     }
 
