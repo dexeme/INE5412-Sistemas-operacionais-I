@@ -17,17 +17,10 @@ public:
     // 2 4 3 1
     void organize_ready_queue() {
         vector<Process> processos;
-        
-        cout << "Antes da organização: [";
+
         while (!is_ready_queue_empty()) {
             Process processo = get_next_process();
-            processos.push_back(processo);
-            cout << processo.getPid() << " (" << processo.getDuration() << ")";
-            if (!is_ready_queue_empty()) {
-                cout << ", ";
-            }
-        }
-        cout << "]" << endl;
+            processos.push_back(processo);}
 
         sort(processos.begin(), processos.end(), [](Process& a, Process& b) {
             return a.getDuration() < b.getDuration();
@@ -46,7 +39,5 @@ public:
         for (const Process& processo : processos) {
             add_process(processo);
         }
-
-        cout << "Fila de prontos organizada com sucesso!" << endl;
     }
 };
