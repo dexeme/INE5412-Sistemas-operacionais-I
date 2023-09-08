@@ -65,6 +65,7 @@ public:
 
     void add_process(Process& process) {
         process.setState(READY);
+        process.setRemainingTime(process.getDuration());
         ready_queue.push(process);
         organize_ready_queue(ready_queue);
         printa_fila_de_prontos();
@@ -83,8 +84,11 @@ public:
 
     void run_process(Process& processo, CPU& cpu) {
         processo.setState(RUNNING);
-        processo.setRemainingTime(processo.getRemainingTime() - 1);
-        cout << "DEBUG: Processo " << processo.getPid() << " rodando." << endl;
+        // Reduz o tempo restante em 1 unidade a cada ciclo de execução
+        int remainingTime = processo.getRemainingTime();
+        if (remainingTime > 0) {
+            processo.setRemainingTime(remainingTime - 1);
+    }
     }
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
     virtual void organize_ready_queue(queue<Process> new_queue) = 0;
@@ -92,6 +96,10 @@ public:
 
     void switch_process(Process& processo_atual, Process& processo_novo) {
         cout << "DEBUG: Trocando processo " << processo_atual.getPid() << " por processo " << processo_novo.getPid() << endl;
+        processo_atual.setState(READY);
+        processo_atual.setDuration(processo_atual.getRemainingTime());
+        processo_novo.setState(RUNNING);
+        set_current_process(&processo_novo);
         cpu.save_context(processo_atual);
         cpu.restore_context(processo_novo);
     }
