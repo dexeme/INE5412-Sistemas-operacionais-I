@@ -14,10 +14,12 @@ class File
 public:
     File();
     ~File();
-    vector<ProcessParams> read_file();
+
+    void read_file();
+    vector<ProcessParams> get_processes() { return processes_params; }
 
 private:
-    vector<ProcessParams> processes;
+    vector<ProcessParams> processes_params;
     ifstream myfile;
 };
 

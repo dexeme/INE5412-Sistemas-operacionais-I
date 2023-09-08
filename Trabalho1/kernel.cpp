@@ -22,24 +22,19 @@ using namespace std;
 void Kernel::start() {
     cout << "DEBUG: Kernel iniciado" << endl;
     start_scheduler("SJF");
-    create_processes();
     }
 
-void Kernel::create_processes() {
-    vector<Process> processos;
-    File file;
-    vector<ProcessParams> processes_lidos = file.read_file();
-    for (unsigned int i = 0; i < processes_lidos.size(); i++) {
-        ProcessParams p = processes_lidos[i];
-        Process processo_novo = create_process(p);
-        processos.push_back(processo_novo);
-        cout << "DEBUG: Processo " << p.get_pid() << " criado" << endl;}
-    for (unsigned int i = 0; i < processos.size(); i++) {
-        Process processo = processos[i];
-        send_process(processo);
-        cout << "DEBUG: Processo " << processo.getPid() << " enviado para o escalonador" << endl;
-    }
-    }
+
+    // for (unsigned int i = 0; i < processes_lidos.size(); i++) {
+    //     ProcessParams p = processes_lidos[i];
+    //     Process processo_novo = create_process(p);
+    //     processos.push_back(processo_novo);
+    //     cout << "DEBUG: Processo " << p.get_pid() << " criado" << endl;}
+    // for (unsigned int i = 0; i < processos.size(); i++) {
+    //     Process processo = processos[i];
+    //     send_process(processo);
+    //     cout << "DEBUG: Processo " << processo.getPid() << " enviado para o escalonador" << endl;
+    // }
 
 void Kernel::create_scheduler(string scheduler_type) {
     if (scheduler_type == "FCFS" || scheduler_type == "SJF") {
@@ -58,8 +53,7 @@ void Kernel::create_scheduler(string scheduler_type) {
 }
 
 void Kernel::send_process(Process processo) {
-    scheduler->add_process(processo);
-}
+    scheduler->add_process(processo);}
 
 void Kernel::start_scheduler(string scheduler_type) {
     create_scheduler(scheduler_type);

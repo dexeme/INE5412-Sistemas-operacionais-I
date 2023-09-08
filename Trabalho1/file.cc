@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "file.h"
 #include "process_params.h"
 
@@ -15,8 +16,8 @@ File::File() {
 }
 
 File::~File() {
-    for (unsigned int i = 0; i < processes.size(); i++) {
-        ProcessParams p = processes[i];
+    for (unsigned int i = 0; i < processes_params.size(); i++) {
+        ProcessParams p = processes_params[i];
     }
     if (myfile.is_open()) {
         cout << "Fechando arquivo!" << endl;
@@ -24,17 +25,18 @@ File::~File() {
     }
 }
 
-vector<ProcessParams> File::read_file() {
+void File::read_file() {
     int a, b, c, d;
     if (!myfile.is_open()) {
         cout << "Arquivo não está aberto!" << endl;
-        return processes;
+        return;
     }
     while (myfile >> a >> b >> c) {
-        ProcessParams *p = new ProcessParams(a, b, c, size(processes)+1);
-        processes.push_back(*p);
+        cout << "DEBUG: Processo " << size(processes_params)+1 << " lido do arquivo" << endl;
+        ProcessParams p = ProcessParams(a, b, c, size(processes_params)+1);
+        processes_params.push_back(p);
     }
-    cout << "Quantidade de processos lidos do arquivo: " << processes.size() << endl;
-    return processes;
+    cout << "Quantidade de processos lidos do arquivo: " << processes_params.size() << endl;
+    sort(processes_params.begin(), processes_params.end(), [](ProcessParams a, ProcessParams b) {
+            return a.get_creation_data() < b.get_creation_data();});
 }
-

@@ -23,6 +23,7 @@ class CPU {
     public:
 
         CPU() {}
+        
         virtual void run_process(Process processo) = 0;
         virtual void save_context(Process processo) = 0;
         virtual void restore_context(Process processo) = 0;

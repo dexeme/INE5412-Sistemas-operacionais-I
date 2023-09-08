@@ -30,6 +30,9 @@ public:
     // Get running time
     int getRunningTime();
 
+    // Set running time
+    void setRunningTime(int time);
+
     // Get remaining time
     int getRemainingTime();
 
@@ -40,16 +43,25 @@ public:
     int getFinishTime();
 
 	// Get duration
-    int getDuration() const;
+    int getDuration();
+
+    // Set Duration
+    void setDuration(int duration);
 
     // Get state
     int getState();
+
+    // Set state
+    void setState(ProcessState state);
 
 	// Get priority
 	int getPriority();
 
     // Get context
     Context* getContext();
+
+    // Is finished
+    bool is_finished();
 
 private:
     int pid;

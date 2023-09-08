@@ -14,13 +14,12 @@ using namespace std;
 class Kernel {
     private:
         CPU* cpu;
-        Scheduler* scheduler;
 
     public:
+        Scheduler* scheduler;
         Kernel() {}
         void start();
         void create_scheduler(string scheduler_type);
-        void create_processes();
         Process create_process(ProcessParams p);
         void start_scheduler(string scheduler_type);
         void send_process(Process processo);

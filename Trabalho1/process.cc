@@ -34,6 +34,11 @@ int Process::getRunningTime() {
     return running_time;
 }
 
+// Set running time
+void Process::setRunningTime(int time) {
+    running_time = time;
+}
+
 // Get remaining time
 int Process::getRemainingTime() {
     return remaining_time;
@@ -54,14 +59,29 @@ int Process::getState() {
     return state;
 }
 
+// Set state
+void Process::setState(ProcessState state) {
+    this->state = state;
+}
+
 // Get duration
-int Process::getDuration() const {
+int Process::getDuration() {
     return duration;
+}
+
+// Set duration
+void Process::setDuration(int duration) {
+    this->duration = duration;
 }
 
 // Get priority
 int Process::getPriority() {
     return priority;
+}
+
+// Get is finished
+bool Process::is_finished() {
+    return remaining_time <= 0;
 }
 
 

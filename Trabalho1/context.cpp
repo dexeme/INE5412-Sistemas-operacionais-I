@@ -8,7 +8,6 @@
 using namespace std;
 
 Context::Context(int r, int sp, int pc, int st) {
-    cout << "DEBUG: context criado" << endl;
     reg[6] = r;
     SP = sp;
     PC = pc;

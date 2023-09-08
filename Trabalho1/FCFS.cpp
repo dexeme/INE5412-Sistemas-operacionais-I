@@ -12,9 +12,11 @@ public:
 
     ~FCFS() {}
 
-    void virtual execute() {}
+    bool execute() {return true;}
 
-    void virtual organize_ready_queue() {
+    bool check_preemption(Process processo_atual) {return false;}
+
+    vector<Process> virtual organize_ready_queue(queue<Process> new_queue) {
         // não precisa organizar a fila de prontos
     }
 };

@@ -13,12 +13,11 @@ using namespace std;
 
 class Scheduler{
 private:
+    queue<Process> new_queue;
     queue<Process> ready_queue;
+    Process current_process = Process(0, 0, 0, 99);
     CPU& cpu;
 
-protected:
-
-    Process current_process = Process(0, 0, 0, 0);
 
 public:
 
@@ -28,31 +27,56 @@ public:
     bool is_ready_queue_empty() {
         return ready_queue.empty();}
 
+    bool is_new_queue_empty() {
+        return new_queue.empty();}
+
     void clear_ready_queue() {
         ready_queue = queue<Process>();}
 
-    void add_process(Process process) {
-        ready_queue.push(process);
+    Process get_current_process() {
+        return current_process;
     }
 
-    virtual void execute() = 0;
+
+    void set_current_process(Process processo) {
+        current_process = processo;}
+
+    void add_process(Process process) {
+        new_queue.push(process);
+        cout << "DEBUG: Processo " << process.getPid() << " adicionado à fila de novos!" << endl;
+        vector<Process> processos_organizados = organize_ready_queue(new_queue);
+        for (unsigned int i = 0; i < processos_organizados.size(); i++) {
+            Process processo = processos_organizados[i];
+            processo.setState(READY);
+            ready_queue.push(processo);
+            cout << "DEBUG: Processo " << processo.getPid() << " adicionado à fila de prontos!" << endl;
+        }}
+
+    virtual bool check_preemption(Process processo_atual) = 0;
+
+    virtual bool execute() = 0;
+
+    // pega a cpu
+    CPU& get_cpu() {return cpu;}
 
     queue<Process> get_ready_queue() {return ready_queue;}
+    void set_ready_queue(queue<Process> ready_queue) {this->ready_queue = ready_queue;}
+    queue<Process> get_new_queue() {return new_queue;}
 
     void run_process(Process processo, CPU& cpu) {
-        cout << "DEBUG: Processo " << processo.getPid() << " executando" << endl;
-        cpu.run_process(processo);
+        cout << "DEBUG: Processo " << processo.getPid() << " executando!" << endl;
+        processo.setState(RUNNING);
+        cout << "$DEBUG: Tempo restante do processo " << processo.getPid() << ": " << processo.getRemainingTime() << endl;
+        processo.setRemainingTime(processo.getRemainingTime() - 1);
+        cout << "*DEBUG: Tempo restante do processo " << processo.getPid() << ": " << processo.getRemainingTime() << endl;
     }
 
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
-    virtual void organize_ready_queue() = 0;
+    virtual vector<Process> organize_ready_queue(queue<Process> new_queue) = 0;
 
     // retorna o processo que está na cabeça da fila de prontos
     Process get_next_process() {
-        Process processo = ready_queue.front();
-        ready_queue.pop();
-        return processo;
-    }
+        Process processo = ready_queue.front();}
 
     void switch_process(Process processo_atual, Process processo_novo) {
         cout << "DEBUG: Trocando processo " << processo_atual.getPid() << " por processo " << processo_novo.getPid() << endl;
