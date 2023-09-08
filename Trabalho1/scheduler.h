@@ -16,10 +16,14 @@ private:
     queue<Process> ready_queue;
     CPU& cpu;
 
+protected:
+
+    Process current_process = Process(0, 0, 0, 0);
+
 public:
 
-    Scheduler(CPU& _cpu) : cpu(_cpu) {}
 
+    Scheduler(CPU& _cpu) : cpu(_cpu) {}
 
     bool is_ready_queue_empty() {
         return ready_queue.empty();}

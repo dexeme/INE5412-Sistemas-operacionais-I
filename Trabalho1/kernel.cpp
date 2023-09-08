@@ -21,8 +21,9 @@ using namespace std;
 
 void Kernel::start() {
     cout << "DEBUG: Kernel iniciado" << endl;
+    start_scheduler("SJF");
     create_processes();
-    start_scheduler("SJF");}
+    }
 
 void Kernel::create_processes() {
     vector<Process> processos;
@@ -32,32 +33,37 @@ void Kernel::create_processes() {
         ProcessParams p = processes_lidos[i];
         Process processo_novo = create_process(p);
         processos.push_back(processo_novo);
-        cout << "DEBUG: Processo " << p.get_pid() << " criado" << endl;
+        cout << "DEBUG: Processo " << p.get_pid() << " criado" << endl;}
+    for (unsigned int i = 0; i < processos.size(); i++) {
+        Process processo = processos[i];
+        send_process(processo);
+        cout << "DEBUG: Processo " << processo.getPid() << " enviado para o escalonador" << endl;
     }
-    
-}
+    }
 
-void Kernel::start_scheduler(string scheduler_type) {
-    Scheduler* scheduler = nullptr;
-    if (scheduler_type == "FCFS") {
-        cout << "DEBUG: Iniciando FCFS" << endl;
+void Kernel::create_scheduler(string scheduler_type) {
+    if (scheduler_type == "FCFS" || scheduler_type == "SJF") {
+        cout << "DEBUG: Iniciando " << scheduler_type << endl;
         ARM cpu = ARM();
-        scheduler = new FCFS(cpu);
-
-    } else if (scheduler_type == "SJF") {
-        cout << "DEBUG: Iniciando SJF" << endl;
-        ARM cpu = ARM();
-        scheduler = new SJF(cpu);
-
-        for (unsigned int i = 0; i < processos.size(); i++) {
-            cout << "DEBUG: Processo " << processos[i].getPid() << " adicionado ao escalonador" << endl;
-            scheduler->add_process(processos[i]);
-            scheduler->organize_ready_queue();
+        if (scheduler_type == "FCFS") {
+            scheduler = new FCFS(cpu);
+        } else {
+            scheduler = new SJF(cpu);
         }
         } else {
             cout << "Scheduler não reconhecido!" << endl;
             return;
         }
+
+}
+
+void Kernel::send_process(Process processo) {
+    scheduler->add_process(processo);
+}
+
+void Kernel::start_scheduler(string scheduler_type) {
+    create_scheduler(scheduler_type);
+    bool running = true;
 }
 
 Process Kernel::create_process(ProcessParams params) {
@@ -67,9 +73,7 @@ Process Kernel::create_process(ProcessParams params) {
     int pid = params.get_pid();
 
     Process processo_novo = Process(creation_data, duration, priority, pid);
-
     cout << "DEBUG: Criando processo " << pid << endl;
-    
     return processo_novo;
     }
 

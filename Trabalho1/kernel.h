@@ -19,9 +19,11 @@ class Kernel {
     public:
         Kernel() {}
         void start();
-        void start_scheduler(string scheduler_type);
+        void create_scheduler(string scheduler_type);
         void create_processes();
         Process create_process(ProcessParams p);
+        void start_scheduler(string scheduler_type);
+        void send_process(Process processo);
         void save_context(Process processo);
         void restore_context(Process processo);
 };
