@@ -13,7 +13,9 @@ using namespace std;
 
 class Kernel {
     private:
+        CPU cpu;
         Scheduler* scheduler;
+        
     public:
         Kernel() {}
         Process create_process(ProcessParams params);
