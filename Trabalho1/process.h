@@ -13,7 +13,7 @@ enum ProcessState {
     READY,
     RUNNING,
     WAITING,
-    TERMINATED
+    FINISHED
 };
 
 class Process
