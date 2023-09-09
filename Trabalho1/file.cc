@@ -36,7 +36,7 @@ void File::read_file() {
         ProcessParams p = ProcessParams(a, b, c, size(processes_params)+1);
         processes_params.push_back(p);
     }
-    cout << "FILE: Quantidade de processos lidos do arquivo: " << processes_params.size() << endl;
+    cout << "FILE: Quantidade de processos lidos do arquivo: " << processes_params.size() << "\n\n" << endl;
     sort(processes_params.begin(), processes_params.end(), [](ProcessParams a, ProcessParams b) {
             return a.get_creation_data() < b.get_creation_data();});
 }
