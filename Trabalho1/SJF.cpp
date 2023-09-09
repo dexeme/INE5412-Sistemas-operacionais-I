@@ -15,6 +15,7 @@ public:
 
     bool execute() {
         Process* processo_atual = get_current_process();
+        CPU &cpu = get_cpu();
         queue<Process>& fila_de_prontos = get_ready_queue();
         
         if (processo_atual == nullptr || processo_atual->is_finished()) {
@@ -34,7 +35,7 @@ public:
                 return true;
             }
 
-            run_process(proximo_processo, get_cpu());
+            cpu.run_process(proximo_processo, cpu);
             if (proximo_processo.getRemainingTime() == 0) {
                 cout << "DEBUG: Processo atual terminou" << endl;
                 finish_process(proximo_processo);
@@ -55,7 +56,7 @@ public:
             return true;
         }
 
-        run_process(*processo_atual, get_cpu());
+        cpu.run_process(*processo_atual, cpu);
         if (processo_atual->getRemainingTime() == 0) {
             cout << "DEBUG: Processo atual terminou" << endl;
             finish_process(*processo_atual);
@@ -92,7 +93,6 @@ public:
 
     void finish_process(Process& processo) {
         processo.setState(FINISHED);
-        set_current_process(nullptr);
         cout << "DEBUG: Processo " << processo.getPid() << " finalizado!" << endl;
         // Tira o processo da fila de prontos
         queue<Process> fila_de_prontos = get_ready_queue();

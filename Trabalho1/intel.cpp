@@ -12,7 +12,6 @@ public:
 
     ~Intel() {}
 
-    void virtual run_process() {}
     void virtual save_context() {}
     void virtual restore_context() {}
     void virtual switch_context() {}

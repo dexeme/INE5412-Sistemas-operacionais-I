@@ -84,15 +84,6 @@ public:
     void set_ready_queue(queue<Process> ready_queue) {this->ready_queue = ready_queue;}
     queue<Process> get_new_queue() {return new_queue;}
 
-    void run_process(Process& processo, CPU& cpu) {
-        processo.setState(RUNNING);
-        // Reduz o tempo restante em 1 unidade a cada ciclo de execução
-        int remainingTime = processo.getRemainingTime();
-        if (remainingTime > 0) {
-            processo.setRemainingTime(remainingTime - 1);
-            cout << "DEBUG: Processo " << processo.getPid() << " rodando! | TR: " << processo.getRemainingTime() << "/" << processo.getDuration() << endl;
-    }
-    }
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
     virtual void organize_ready_queue(queue<Process> new_queue) = 0;
 
