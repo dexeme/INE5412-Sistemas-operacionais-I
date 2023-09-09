@@ -24,11 +24,23 @@ class CPU {
 
         CPU() {}
         
-        virtual void run_process(Process processo) = 0;
+
         virtual void save_context(Process processo) = 0;
         virtual void restore_context(Process processo) = 0;
         virtual void switch_context(Process processo_atual, Process processo_novo) = 0;
         virtual ~CPU() {}
+        
+        void run_process(Process &processo, CPU &cpu){
+            processo.setState(RUNNING);
+            int remainingTime = processo.getRemainingTime();
+            if (remainingTime > 0)
+            {
+            processo.setRemainingTime(remainingTime - 1);
+            cout << "CPU: Processo " << processo.getPid() << " rodando! | TR: " << processo.getRemainingTime() << "/" << processo.getDuration() << endl;
+            }
+        }
+
+
 };
 
 #endif

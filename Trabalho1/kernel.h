@@ -17,14 +17,18 @@ class Kernel {
 
     public:
         Scheduler* scheduler;
+
         Kernel() {}
+
         void start();
-        void create_scheduler(string scheduler_type);
+        
         Process create_process(ProcessParams p);
+
+        void create_scheduler(string scheduler_type);
         void start_scheduler(string scheduler_type);
         void send_process(Process processo);
-        void save_context(Process processo);
-        void restore_context(Process processo);
+
+        
 };
 
 #endif
