@@ -21,6 +21,7 @@ using namespace std;
 
         bool running = true;
         int current_time = 0;
+            cout << "- - - - - - - - - - - - - - - - - - - - - - - - - " << current_time << endl;
         while (running) {
             // Verifique se há processos para criar e enviar para o escalonador
             for (ProcessParams process : process_params) {
@@ -30,10 +31,11 @@ using namespace std;
                 }
             }
 
+            // Printa o current_time
+            cout << "- - - - - - - - - - - - - - - - - - - - - - - - - " << current_time << endl;
             current_time++;
 
             
-            cout << current_time << endl;
             sleep(1);
 
             // Verifique se o escalonador terminou de executar todos os processos
