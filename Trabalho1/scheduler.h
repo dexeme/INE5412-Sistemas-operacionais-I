@@ -65,7 +65,7 @@ public:
     }
 
 
-    void add_process(Process& process) {
+    void receive_process(Process& process) {
         process.setState(READY);
         process.setRemainingTime(process.getDuration());
         ready_queue.push(process);
