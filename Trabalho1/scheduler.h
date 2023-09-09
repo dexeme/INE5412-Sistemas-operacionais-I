@@ -43,6 +43,8 @@ public:
         cout << "DEBUG: Processo " << processo.getPid() << " finalizado." << endl;
         finished_queue.push(processo);
         ready_queue.pop();
+        // set_current_process(nullptr);
+        printa_fila_de_prontos();
     }
 
 
@@ -88,6 +90,7 @@ public:
         int remainingTime = processo.getRemainingTime();
         if (remainingTime > 0) {
             processo.setRemainingTime(remainingTime - 1);
+            cout << "DEBUG: Processo " << processo.getPid() << " rodando! Tempo restante: " << processo.getRemainingTime() << endl;
     }
     }
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
@@ -105,14 +108,17 @@ public:
     }
 
     void printa_fila_de_prontos() {
-        cout << "DEBUG: Fila de prontos: ";
+        cout << "READY-QUEUE: [";
         queue<Process> fila_de_prontos = get_ready_queue();
         while (!fila_de_prontos.empty()) {
-            cout << fila_de_prontos.front().getPid() << " ";
+            cout << fila_de_prontos.front().getPid();
             fila_de_prontos.pop();
+            if (!fila_de_prontos.empty()) {
+                cout << ", ";
+            }
         }
-        cout << endl;
-    }    
+        cout << "]" << endl;
+    }  
 };
 
 #endif
