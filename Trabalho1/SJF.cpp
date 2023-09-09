@@ -17,74 +17,54 @@ public:
         Process* processo_atual = get_current_process();
         queue<Process>& fila_de_prontos = get_ready_queue();
         
-        if (processo_atual == nullptr) {
-            cout << "DEBUG: Processo atual é nulo" << endl;
+        if (processo_atual == nullptr || processo_atual->is_finished()) {
+            cout << "NULLPTR: Processo atual é nulo" << endl;
             if (is_ready_queue_empty()) {
-                cout << "DEBUG: Fila de prontos está vazia" << endl;
+                cout << "READY-QUEUE: Fila de processos vazia!" << endl;
                 return false;
             }
             Process& proximo_processo = get_next_process();
-            cout << "DEBUG: Fila de prontos não está vazia! Selecionando próximo processo" << endl;
-            cout << "DEBUG: Próximo processo: " << proximo_processo.getPid() << endl;
+            cout << "DEBUG: Fila de prontos não está vazia! Próximo processo: " << proximo_processo.getPid() << " | TR: " << proximo_processo.getRemainingTime() << "/" << proximo_processo.getDuration() << endl;
+
+            if (check_preemption(proximo_processo)) {
+                cout << "\nDEBUG: Processo atual é preemptado" << endl;
+                cout << "DEBUG: Processo atual: " << processo_atual->getPid() << endl;
+                cout << "DEBUG: Próximo processo: " << proximo_processo.getPid() << "\n" << endl;
+                switch_process(*processo_atual, proximo_processo);
+                return true;
+            }
+
             run_process(proximo_processo, get_cpu());
             if (proximo_processo.getRemainingTime() == 0) {
                 cout << "DEBUG: Processo atual terminou" << endl;
                 finish_process(proximo_processo);
-                return !is_ready_queue_empty();
             }
-            return true;
-
+            return !is_ready_queue_empty();
         }
-        if (processo_atual != nullptr && !processo_atual->is_finished()) {
-            cout << "\nDEBUG: Processo atual não é nulo e não está finalizado" << endl;
+
+        cout << "\nDEBUG: Processo atual não é nulo e não está finalizado" << endl;
+        cout << "DEBUG: Processo atual: " << processo_atual->getPid() << endl;
+        cout << "DEBUG: Tempo restante: " << processo_atual->getRemainingTime() << "\n" << endl;
+
+        if (check_preemption(*processo_atual)) {
+            cout << "\nDEBUG: Processo atual é preemptado" << endl;
             cout << "DEBUG: Processo atual: " << processo_atual->getPid() << endl;
-            cout << "DEBUG: Tempo restante: " << processo_atual->getRemainingTime() << "\n" <<endl;
+            cout << "DEBUG: Próximo processo: " << get_next_process().getPid() << "\n" << endl;
 
-            if (check_preemption(*processo_atual)) {
-                cout << "\nDEBUG: Processo atual é preemptado" << endl;
-                cout << "DEBUG: Processo atual: " << processo_atual->getPid() << endl;
-                cout << "DEBUG: Próximo processo: " << get_next_process().getPid() << "\n" << endl;
-                switch_process(*processo_atual, get_next_process());
-                return true;
-            }
-        }
-            if (processo_atual->getRemainingTime() == get_next_process().getRemainingTime()) {
-                cout << "DEBUG: Processo atual e próximo processo tem o mesmo tempo restante" << endl;
-                run_process(*processo_atual, get_cpu());
-                if (processo_atual->getRemainingTime() == 0) {
-                    cout << "DEBUG: Processo atual terminou" << endl;
-                    finish_process(*processo_atual);
-                    return !is_ready_queue_empty();
-                }
-                return true;
-            }
-            if (!check_preemption(*processo_atual)) {
-                cout << "\nDEBUG: Processo atual não é preemptado" << endl;
-                cout << "DEBUG: Processo atual: " << processo_atual->getPid() << endl;
-                cout << "DEBUG: Próximo processo: " << get_next_process().getPid() << "\n" << endl;
-                run_process(*processo_atual, get_cpu());
-                if (processo_atual->getRemainingTime() == 0) {
-                    cout << "DEBUG: Processo atual terminou" << endl;
-                    cout << "DEBUG: Processo atual: " << processo_atual->getPid() << endl;
-                    finish_process(*processo_atual);
-                    return !is_ready_queue_empty();
-                }
-                return true;
-            }
-        
-        if (!is_ready_queue_empty() && processo_atual != nullptr && processo_atual->getState() == RUNNING) {
-            cout << "DEBUG: Processo atual não é nulo e está rodando" << endl;
-            run_process(*processo_atual, get_cpu());
-            if (processo_atual->getRemainingTime() == 0) {
-                cout << "DEBUG: Processo atual terminou" << endl;
-                finish_process(*processo_atual);
-                return !is_ready_queue_empty();
-            }
+            switch_process(*processo_atual, get_next_process());
             return true;
+        }
+
+        run_process(*processo_atual, get_cpu());
+        if (processo_atual->getRemainingTime() == 0) {
+            cout << "DEBUG: Processo atual terminou" << endl;
+            finish_process(*processo_atual);
+            return !is_ready_queue_empty();
         }
 
         return true;
     }
+
 
     void organize_ready_queue(queue<Process> ready_queue) {
         vector<Process> processos;

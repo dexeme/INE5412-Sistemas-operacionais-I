@@ -90,7 +90,7 @@ public:
         int remainingTime = processo.getRemainingTime();
         if (remainingTime > 0) {
             processo.setRemainingTime(remainingTime - 1);
-            cout << "DEBUG: Processo " << processo.getPid() << " rodando! Tempo restante: " << processo.getRemainingTime() << endl;
+            cout << "DEBUG: Processo " << processo.getPid() << " rodando! | TR: " << processo.getRemainingTime() << "/" << processo.getDuration() << endl;
     }
     }
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
