@@ -23,8 +23,9 @@ public:
                 cout << "DEBUG: Fila de prontos está vazia" << endl;
                 return false;
             }
-            cout << "DEBUG: Fila de prontos não está vazia" << endl;
             Process& proximo_processo = get_next_process();
+            cout << "DEBUG: Fila de prontos não está vazia! Selecionando próximo processo" << endl;
+            cout << "DEBUG: Próximo processo: " << proximo_processo.getPid() << endl;
             run_process(proximo_processo, get_cpu());
             if (proximo_processo.getRemainingTime() == 0) {
                 cout << "DEBUG: Processo atual terminou" << endl;
