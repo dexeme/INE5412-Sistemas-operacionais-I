@@ -20,7 +20,7 @@
 using namespace std;
 
 void Kernel::start() {
-    cout << "DEBUG: Kernel iniciado" << endl;
+    cout << "KERNEL: Kernel iniciado\n" << endl;
     start_scheduler("SJF");
     }
 
@@ -38,7 +38,7 @@ void Kernel::start() {
 
 void Kernel::create_scheduler(string scheduler_type) {
     if (scheduler_type == "FCFS" || scheduler_type == "SJF") {
-        cout << "DEBUG: Iniciando " << scheduler_type << endl;
+        cout << "KERNEL: Iniciando " << scheduler_type << "\n" << endl;
         ARM cpu = ARM();
         if (scheduler_type == "FCFS") {
             
@@ -46,7 +46,7 @@ void Kernel::create_scheduler(string scheduler_type) {
             scheduler = new SJF(cpu);
         }
         } else {
-            cout << "Scheduler não reconhecido!" << endl;
+            cout << "KERNEL: Scheduler não reconhecido!" << endl;
             return;
         }
 
@@ -67,7 +67,7 @@ Process Kernel::create_process(ProcessParams params) {
     int pid = params.get_pid();
 
     Process processo_novo = Process(creation_data, duration, priority, pid);
-    cout << "DEBUG: Criando processo " << pid << endl;
+    cout << "\nKERNEL: Criando processo " << pid << " | Duração: " << duration << "s" << endl;
     processo_novo.setRemainingTime(duration);
     return processo_novo;
     }
