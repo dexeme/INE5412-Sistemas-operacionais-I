@@ -12,6 +12,9 @@
 #include "file.cc"
 #include "FCFS.cpp"
 #include "SJF.cpp"
+#include "RR.cpp"
+#include "PRIO.cpp"
+#include "PREPRIO.cpp"
 #include "ARM.cpp"
 #include "CPU.h"
 
@@ -21,7 +24,7 @@ void Kernel::start()
 {
     cout << "KERNEL: Kernel iniciado\n"
          << endl;
-    start_scheduler("SJF");
+    start_scheduler("FCFS");
 }
 
 Process Kernel::create_process(ProcessParams params)
@@ -44,11 +47,11 @@ void Kernel::create_scheduler(string scheduler_type)
         cout << "KERNEL: Iniciando " << scheduler_type << "\n" << endl;
         ARM cpu = ARM();
         // TODO: Implementar criação de scheduler
-        if (scheduler_type == "FCFS"){}
-        if (scheduler_type == "SJF"){}
-        if (scheduler_type == "PRIO"){}
-        if (scheduler_type == "PREPRIO"){}
-        if (scheduler_type == "RR"){}
+        if (scheduler_type == "FCFS") { scheduler = new FCFS(cpu); }
+        if (scheduler_type == "SJF") { scheduler = new SJF(cpu); }
+        if (scheduler_type == "PRIO") { scheduler = new PRIO(cpu); }
+        if (scheduler_type == "PREPRIO") { scheduler = new PREPRIO(cpu); }
+        if (scheduler_type == "RR") { scheduler = new RR(cpu); }
 
     } else {
         cout << "KERNEL: Scheduler não reconhecido!" << endl;
