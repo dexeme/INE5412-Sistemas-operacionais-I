@@ -12,14 +12,12 @@ public:
 
     ~PRIO() {}
 
-    // 3 1 2 4
+    // 4 2 1 3
 bool execute() {
     printa_fila_de_prontos(); // DEBUG
 
     queue<Process>& fila_de_executando = get_running_queue();
-
     queue<Process>& fila_de_prontos = get_ready_queue();
-
     CPU &cpu = get_cpu();
 
     if (!is_running_queue_empty()) {
@@ -39,7 +37,6 @@ bool execute() {
         int prioridade_atual = fila_de_executando.front().getPriority();
 
         Process& proximo_processo = get_next_process();
-
         queue<Process>& running_queue = get_running_queue();
         queue<Process>& ready_queue = get_ready_queue();
 
@@ -52,6 +49,10 @@ bool execute() {
         printa_fila_de_prontos();
 
         cpu.run_process(proximo_processo, cpu); // Executa o próximo processo na CPU
+        
+        // Atualize o tempo restante do processo atual
+        fila_de_executando.front().setRemainingTime(proximo_processo.getRemainingTime());
+        
         if (proximo_processo.getRemainingTime() == 0) {
             finish_process(proximo_processo); // Se o processo terminou, finaliza ele
         }
@@ -70,23 +71,26 @@ bool execute() {
             cout << "DEBUG: Processo atual é preemptado" << endl; // ISSO
         }
         int tempo_restante_do_processo_apos_execucao = cpu.run_process(fila_de_executando.front(), cpu);
-
+        
+        // Atualize o tempo restante do processo atual
+        fila_de_executando.front().setRemainingTime(tempo_restante_do_processo_apos_execucao);
+        
         if (tempo_restante_do_processo_apos_execucao == 0) {
             finish_process(fila_de_executando.front());
         }
-
-    }
-
-
-    Process& processo_atual = fila_de_executando.front();
-
-    if (cpu.is_idle() && !processo_atual.is_finished()) { // Se a CPU está livre e o processo atual não está finalizado
-        if (!fila_de_prontos.empty()) {
-            Process processo_atual = fila_de_prontos.front();
-            fila_de_prontos.pop();
-            cpu.run_process(processo_atual, cpu);
+        return !is_ready_queue_empty();
+    } else {
+        // Se não houver preempção, execute apenas o processo atual
+        int tempo_restante_do_processo_apos_execucao = cpu.run_process(fila_de_executando.front(), cpu);
+        
+        // Atualize o tempo restante do processo atual
+        fila_de_executando.front().setRemainingTime(tempo_restante_do_processo_apos_execucao);
+        
+        if (tempo_restante_do_processo_apos_execucao == 0) {
+            finish_process(fila_de_executando.front());
         }
     }
+    
     return false;
 }
 
