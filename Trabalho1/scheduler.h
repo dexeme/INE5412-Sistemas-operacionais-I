@@ -37,6 +37,9 @@ public:
     void set_running_queue(queue<Process> running_queue) {
         this->running_queue = running_queue;}
 
+    void clear_running_queue() {
+        running_queue = queue<Process>();}
+
     bool is_new_queue_empty() {
         return new_queue.empty();}
 
@@ -97,12 +100,18 @@ public:
 
     void switch_process(Process& processo_atual, Process& processo_novo) {
         cout << "DEBUG: Trocando processo " << processo_atual.getPid() << " por processo " << processo_novo.getPid() << endl;
+        printa_fila_de_prontos();
+        clear_running_queue();
+        processo_novo.setState(RUNNING);
+        running_queue.push(processo_novo);
+
         processo_atual.setState(READY);
         processo_atual.setDuration(processo_atual.getRemainingTime());
-        processo_novo.setState(RUNNING);
-        set_current_process(&processo_novo);
-        cpu.save_context(processo_atual);
-        cpu.restore_context(processo_novo);
+        ready_queue.pop();
+        ready_queue.push(processo_atual);
+        printa_fila_de_prontos();
+        //cpu.save_context(processo_atual);
+        //cpu.restore_context(processo_novo);
     }
 
     void printa_fila_de_prontos() {
