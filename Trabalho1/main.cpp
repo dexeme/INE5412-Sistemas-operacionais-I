@@ -9,6 +9,7 @@
 #include "kernel.cpp"
 #include "kernel.h"
 #include "process_params.h"
+#include "output.cpp"
 
 using namespace std;
 
@@ -18,11 +19,14 @@ int main()
     kernel.start();
     File file;
     file.read_file();
+    Output output;
     vector<ProcessParams> process_params = file.get_processes();
 
     bool running = true;
     int current_time = 0;
-    cout << "- - - - - - - - - - - - - - - - - - - - - - - - - " << current_time << endl;
+    
+    output.print_header();
+
     while (running)
     {
         for (ProcessParams process : process_params)
@@ -34,9 +38,11 @@ int main()
             }
         }
 
-        // Printa o current_time
-        cout << "- - - - - - - - - - - - - - - - - - - - - - - - - " << current_time << endl;
         current_time++;
+
+        queue<Process> running_queue = kernel.scheduler->get_running_queue();
+        queue<Process> ready_queue = kernel.scheduler->get_ready_queue();
+        output.print_line(current_time, running_queue, ready_queue);
 
         sleep(1);
 
