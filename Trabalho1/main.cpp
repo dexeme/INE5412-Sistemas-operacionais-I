@@ -16,38 +16,42 @@ using namespace std;
 int main()
 {
     Kernel kernel;
-    kernel.start();
+    kernel.start(); // Inicia o sistema
+
     File file;
-    file.read_file();
-    Output output;
-    vector<ProcessParams> process_params = file.get_processes();
+    file.read_file(); // Lê o arquivo de entrada
+
+    Output output; // Classe responsável por imprimir os dados de saída
+
+    vector<ProcessParams> process_params = file.get_processes(); // Pega os parâmetros dos processos do arquivo
 
     bool running = true;
-    int current_time = 0;
+    int current_time = 0; // Tempo atual do sistema
     
-    output.print_header();
+    output.print_header(); // Imprime "tempo      P1  P2  P3  P4"
 
-    while (running)
+    while (running) // Enquanto o escalonador não terminar de executar todos os processos
     {
-        for (ProcessParams process : process_params)
+        for (ProcessParams process : process_params) // Para cada processo no arquivo de entrada
         {
-            if (process.get_creation_data() == current_time)
+            if (process.get_creation_data() == current_time) // Se o processo deve ser criado nesse tempo
             {
-                Process new_process = kernel.create_process(process);
-                kernel.send_process(new_process); // Cria o processo e envia para o escalonador
+                Process new_process = kernel.create_process(process); // Cria o processo
+                kernel.send_process(new_process); // Envia o processo para o escalonador
             }
         }
 
         current_time++;
 
         queue<Process> running_queue = kernel.scheduler->get_running_queue();
+
         queue<Process> ready_queue = kernel.scheduler->get_ready_queue();
+
         output.print_line(current_time, running_queue, ready_queue);
 
-        sleep(1);
+        sleep(1); // Espera 1 segundo
 
-        // Verifique se o escalonador terminou de executar todos os processos
-        kernel.scheduler->execute();
+        kernel.scheduler->execute(); // Executa o escalonador
     }
 
     return 0;
