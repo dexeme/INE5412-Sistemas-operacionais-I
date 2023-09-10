@@ -73,8 +73,6 @@ public:
         printa_fila_de_prontos();
     }
 
-    virtual bool check_preemption(Process& processo_atual) = 0;
-
     virtual bool execute() = 0;
 
     // pega a cpu
