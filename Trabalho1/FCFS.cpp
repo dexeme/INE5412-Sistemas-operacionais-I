@@ -15,23 +15,23 @@ public:
     ~FCFS() {}
 
     bool execute() {
-        printa_fila_de_prontos();
+        printa_fila_de_prontos(); // DEBUG
         Process* processo_atual = get_current_process();
         CPU &cpu = get_cpu();
         queue<Process>& fila_de_prontos = get_ready_queue();
 
         if (processo_atual == nullptr) { // Se o processo atual é nulo
-            if (is_ready_queue_empty()) { // Se a fila de prontos está vazia
+            if (is_ready_queue_empty()) {
                 return false;
             }
             Process& proximo_processo = get_next_process();
-            cpu.run_process(proximo_processo, cpu);
+            cpu.run_process(proximo_processo, cpu); // Executa o próximo processo na CPU
             if (proximo_processo.getRemainingTime() == 0) {
-                finish_process(proximo_processo);
+                finish_process(proximo_processo); // Se o processo terminou, finaliza ele
             }
-            return !is_ready_queue_empty();
+            return !is_ready_queue_empty(); // Retorna se a fila de prontos está vazia, para saber se o escalonador terminou
         }
-        if (cpu.is_idle() && !processo_atual->is_finished()) { // Se a CPU está ociosa e o processo atual não está finalizado
+        if (cpu.is_idle() && !processo_atual->is_finished()) { // Se a CPU está livre e o processo atual não está finalizado
             if (!fila_de_prontos.empty()) {
                 Process processo_atual = fila_de_prontos.front();
                 fila_de_prontos.pop();
@@ -41,14 +41,9 @@ public:
         return false;
     }
 
-    bool check_preemption(Process processo_atual) {
-        // FCFS não tem preempção
-        return false;
-    }
+    bool check_preemption(Process processo_atual) { return false; } // FCFS não tem preempção
 
-    void organize_ready_queue(queue<Process> new_queue) {
-        // não precisa organizar a fila de prontos
-    }
+    void organize_ready_queue(queue<Process> new_queue) { } // FCFS não precisa organizar a fila de prontos
 
     void printa_fila_de_prontos() {
         cout << "DEBUG: Fila de prontos: ";
