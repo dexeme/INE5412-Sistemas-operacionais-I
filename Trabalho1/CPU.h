@@ -20,10 +20,15 @@ using namespace std;
 
 
 class CPU {
+    private:
+
+        bool idle = true;
+
     public:
 
         CPU() {}
         
+        bool is_idle() { return idle; }
 
         virtual void save_context(Process processo) = 0;
         virtual void restore_context(Process processo) = 0;
@@ -31,6 +36,7 @@ class CPU {
         virtual ~CPU() {}
         
         void run_process(Process &processo, CPU &cpu){
+            idle = false;
             processo.setState(RUNNING);
             int remainingTime = processo.getRemainingTime();
             if (remainingTime > 0)
