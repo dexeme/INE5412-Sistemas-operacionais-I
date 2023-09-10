@@ -15,6 +15,7 @@ class Scheduler{
 private:
     queue<Process> new_queue;
     queue<Process> ready_queue;
+    queue<Process> running_queue;
     queue<Process> finished_queue;
     Process* current_process;
     CPU& cpu;
@@ -27,6 +28,14 @@ public:
 
     bool is_ready_queue_empty() {
         return ready_queue.empty();}
+
+    bool is_running_queue_empty() {
+        return running_queue.empty();}
+
+    queue<Process>& get_running_queue() { return running_queue; }
+
+    void set_running_queue(queue<Process> running_queue) {
+        this->running_queue = running_queue;}
 
     bool is_new_queue_empty() {
         return new_queue.empty();}
@@ -41,9 +50,8 @@ public:
     void finish_process(Process& processo) {
         processo.setState(FINISHED);
         cout << "DEBUG: Processo " << processo.getPid() << " finalizado." << endl;
-        finished_queue.push(processo);
-        ready_queue.pop();
-        // set_current_process(nullptr);
+        finished_queue.push(processo); // Adiciona o processo na fila de finalizados
+        running_queue.pop(); // Remove o processo da fila de executando
         printa_fila_de_prontos();
     }
 
@@ -55,6 +63,7 @@ public:
 
     Process& get_next_process() {
         if (!ready_queue.empty()) {
+
             return ready_queue.front();
         } else {
             // Lida com a situação em que a fila de prontos está vazia.
