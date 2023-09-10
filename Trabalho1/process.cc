@@ -20,68 +20,41 @@ Process::Process(int c, int d, int p, int i) {
 }
 
 // Get pid
-int Process::getPid() const {
-    return pid;
-}
+int Process::getPid() const { return pid; }
 
 // Get creation time
-int Process::getCreationTime() {
-    return creation_time;
-}
+int Process::getCreationTime() { return creation_time; }
 
 // Get running time
-int Process::getRunningTime() {
-    return running_time;
-}
+int Process::getRunningTime() { return running_time; }
 
 // Set running time
-void Process::setRunningTime(int time) {
-    running_time = time;
-}
+void Process::setRunningTime(int time) { running_time = time; }
 
 // Get remaining time
-int Process::getRemainingTime() {
-    return remaining_time;
-}
+int Process::getRemainingTime() { return remaining_time; }
 
-void Process::setRemainingTime(int time)
-{
-    remaining_time = time;
-}
+void Process::setRemainingTime(int time) { remaining_time = time; }
 
 // Get finish time
-int Process::getFinishTime() {
-    return finish_time;
-}
+int Process::getFinishTime() { return finish_time; }
 
 // Get state
-int Process::getState() {
-    return state;
-}
+int Process::getState() { return state; }
 
 // Set state
-void Process::setState(ProcessState state) {
-    this->state = state;
-}
+void Process::setState(ProcessState state) { this->state = state; }
 
 // Get duration
-int Process::getDuration() {
-    return duration;
-}
+int Process::getDuration() { return duration; }
 
 // Set duration
-void Process::setDuration(int duration) {
-    this->duration = duration;
-}
+void Process::setDuration(int duration) { this->duration = duration; }
 
 // Get priority
-int Process::getPriority() {
-    return priority;
-}
+int Process::getPriority() { return priority; }
 
 // Get is finished
-bool Process::is_finished() {
-    return remaining_time = 0;
-}
+bool Process::is_finished() { return remaining_time = 0; }
 
 
