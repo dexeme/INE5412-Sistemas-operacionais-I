@@ -35,7 +35,7 @@ class CPU {
         virtual void switch_context(Process processo_atual, Process processo_novo) = 0;
         virtual ~CPU() {}
         
-        void run_process(Process &processo, CPU &cpu){
+        int run_process(Process &processo, CPU &cpu){
             idle = false;
             processo.setState(RUNNING);
             int remainingTime = processo.getRemainingTime();
@@ -44,6 +44,7 @@ class CPU {
             processo.setRemainingTime(remainingTime - 1);
             cout << "CPU: Processo " << processo.getPid() << " rodando! | TR: " << processo.getRemainingTime() << "/" << processo.getDuration() << endl;
             }
+            return processo.getRemainingTime();
         }
 
 
