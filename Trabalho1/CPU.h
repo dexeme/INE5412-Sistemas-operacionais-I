@@ -21,7 +21,7 @@ using namespace std;
 
 class CPU {
     private:
-
+        
         bool idle = true;
 
     public:
@@ -33,6 +33,7 @@ class CPU {
         virtual void save_context(Process processo) = 0;
         virtual void restore_context(Process processo) = 0;
         virtual void switch_context(Process processo_atual, Process processo_novo) = 0;
+        
         virtual ~CPU() {}
         
         int run_process(Process &processo, CPU &cpu){
