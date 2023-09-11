@@ -24,7 +24,7 @@ void Kernel::start()
 {
     cout << "KERNEL: Kernel iniciado\n"
          << endl;
-    start_scheduler("RR");
+    start_scheduler("FCFS");
 }
 
 Process Kernel::create_process(ProcessParams params)
@@ -68,7 +68,7 @@ void Kernel::start_scheduler(string scheduler_type)
     bool running = true; 
 }
 
-void Kernel::send_process(Process processo)
+void Kernel::send_process(Process processo, string scheduler_type)
 {
-    scheduler->receive_process(processo); // Envia o processo para o escalonador
+    scheduler->receive_process(processo, scheduler_type); // Envia o processo para o escalonador
 }

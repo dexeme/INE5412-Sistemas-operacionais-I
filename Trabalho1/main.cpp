@@ -27,6 +27,8 @@ int main()
 
     bool running = true;
     int current_time = 0; // Tempo atual do sistema
+
+    string scheduler_type = "FCFS"; // Tipo de escalonador
     
     output.print_header(); // Imprime "tempo      P1  P2  P3  P4"
 
@@ -37,7 +39,7 @@ int main()
             if (process.get_creation_data() == current_time) // Se o processo deve ser criado nesse tempo
             {
                 Process new_process = kernel.create_process(process); // Cria o processo
-                kernel.send_process(new_process); // Envia o processo para o escalonador
+                kernel.send_process(new_process, scheduler_type); // Envia o processo para o escalonador
             }
         }
 
