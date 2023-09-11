@@ -93,22 +93,6 @@ bool execute() {
     
     return false;
 }
-
-    void organize_ready_queue(queue<Process> ready_queue) {
-        vector<Process> processos;
-        while (!ready_queue.empty()) {
-            processos.push_back(ready_queue.front());
-            ready_queue.pop();
-        }
-        sort(processos.begin(), processos.end(), [](Process& a, Process& b) {
-            return a.getDuration() < b.getDuration();
-        });
-        for (Process processo : processos) {
-            ready_queue.push(processo);
-        }
-        set_ready_queue(ready_queue);
-    }
-
     bool check_preemption(Process& processo_atual) { return false; } // Sem preempção
 
 };

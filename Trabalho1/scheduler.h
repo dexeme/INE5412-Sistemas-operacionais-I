@@ -26,28 +26,26 @@ public:
 
     Scheduler(CPU& _cpu) : cpu(_cpu), current_process(nullptr) {}
 
-    bool is_ready_queue_empty() {
-        return ready_queue.empty();}
+    void clear_ready_queue() { ready_queue = queue<Process>(); }
 
-    bool is_running_queue_empty() {
-        return running_queue.empty();}
+    void clear_running_queue() { running_queue = queue<Process>(); }
+
+    bool is_ready_queue_empty() { return ready_queue.empty(); }
+
+    bool is_running_queue_empty() { return running_queue.empty(); }
+
+    bool is_new_queue_empty() { return new_queue.empty(); }
 
     queue<Process>& get_running_queue() { return running_queue; }
 
-    void set_running_queue(queue<Process> running_queue) {
-        this->running_queue = running_queue;}
+    void set_running_queue(queue<Process> running_queue) { this->running_queue = running_queue; }
 
-    void clear_running_queue() {
-        running_queue = queue<Process>();}
+    void set_current_process(Process* current_process) { this->current_process = current_process; }
 
-    bool is_new_queue_empty() {
-        return new_queue.empty();}
+    Process* get_current_process() { return current_process; }
 
-    void clear_ready_queue() {
-        ready_queue = queue<Process>();}
 
-    Process* get_current_process() {
-        return current_process;}
+
 
     // Remove o processo da fila de prontos e o coloca na fila de finalizados
     void finish_process(Process& processo) {
@@ -55,13 +53,7 @@ public:
         cout << "DEBUG: Processo " << processo.getPid() << " finalizado." << endl;
         finished_queue.push(processo); // Adiciona o processo na fila de finalizados
         running_queue.pop(); // Remove o processo da fila de executando
-        printa_fila_de_prontos();
-    }
-
-
-
-    void set_current_process(Process* current_process) {
-        this->current_process = current_process;
+        printa_fila_de_prontos(); // DEBUG
     }
 
     Process& get_next_process() {
@@ -77,11 +69,11 @@ public:
     }
 
 
-    void receive_process(Process& process) {
+    void receive_process(Process& process, string sched) {
         process.setState(READY);
         process.setRemainingTime(process.getDuration());
         ready_queue.push(process);
-        organize_ready_queue(ready_queue);
+        organize_ready_queue(ready_queue, sched);
         printa_fila_de_prontos();
     }
 
@@ -95,7 +87,32 @@ public:
     queue<Process> get_new_queue() {return new_queue;}
 
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
-    virtual void organize_ready_queue(queue<Process> new_queue) = 0;
+    void organize_ready_queue(queue<Process> ready_queue, string scheduler_type) {
+    vector<Process> processos;
+    while (!ready_queue.empty()) {
+        processos.push_back(ready_queue.front());
+        ready_queue.pop();
+    }
+    if (scheduler_type == "FCFS || RR") {
+        sort(processos.begin(), processos.end(), [](Process& a, Process& b) {
+        return a.getCreationTime() < b.getCreationTime();
+    });
+}
+    if (scheduler_type == "PRIO || PREPRIO") {
+        sort(processos.begin(), processos.end(), [](Process& a, Process& b) {
+        return a.getPriority() > b.getPriority();
+    });
+}
+    if (scheduler_type == "SJF") {
+        sort(processos.begin(), processos.end(), [](Process& a, Process& b) {
+        return a.getDuration() < b.getDuration();
+    });
+    for (Process processo : processos) {
+        ready_queue.push(processo);
+    }
+    set_ready_queue(ready_queue);
+    }
+}
 
 
     void switch_process(Process& processo_atual, Process& processo_novo) {
