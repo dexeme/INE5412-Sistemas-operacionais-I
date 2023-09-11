@@ -56,8 +56,7 @@ bool execute() {
             int prioridade_proximo_processo = proximo_processo.getPriority();
             cout << "DEBUG: Prioridade do processo atual: " << prioridade_processo_atual << endl;
             cout << "DEBUG: Prioridade do próximo processo: " << prioridade_proximo_processo << endl;
-            if (prioridade_proximo_processo > prioridade_processo_atual) {
-                cout << "DEBUG: Processo atual é preemptado" << endl; // ISSO
+            if (prioridade_proximo_processo > prioridade_processo_atual) {}
             }
             int tempo_restante_do_processo_apos_execucao = cpu.run_process(fila_de_executando.front(), cpu);
 
@@ -84,7 +83,7 @@ bool execute() {
     }
 
     // Restante do código para o caso em que há um processo em execução
-}
+
 
 
     bool check_preemption(Process processo_atual) { return false; } // FCFS não tem preempção

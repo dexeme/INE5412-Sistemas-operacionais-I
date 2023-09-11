@@ -32,7 +32,7 @@ int main()
 
     while (running) // Enquanto o escalonador não terminar de executar todos os processos
     {
-        for (ProcessParams process : process_params) // Para cada processo no arquivo de entrada
+        for (ProcessParams process : process_params)
         {
             if (process.get_creation_data() == current_time) // Se o processo deve ser criado nesse tempo
             {
@@ -43,11 +43,11 @@ int main()
 
         current_time++;
 
-        queue<Process> running_queue = kernel.scheduler->get_running_queue();
+        //queue<Process> running_queue = kernel.scheduler->get_running_queue();
 
-        queue<Process> ready_queue = kernel.scheduler->get_ready_queue();
+        //queue<Process> ready_queue = kernel.scheduler->get_ready_queue();
 
-        output.print_line(current_time, running_queue, ready_queue);
+        //output.print_line(current_time, running_queue, ready_queue);
 
         sleep(1); // Espera 1 segundo
 

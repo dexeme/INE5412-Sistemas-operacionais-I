@@ -24,7 +24,7 @@ void Kernel::start()
 {
     cout << "KERNEL: Kernel iniciado\n"
          << endl;
-    start_scheduler("FCFS");
+    start_scheduler("RR");
 }
 
 Process Kernel::create_process(ProcessParams params)
@@ -34,8 +34,10 @@ Process Kernel::create_process(ProcessParams params)
     int duration = params.get_duration();
     int pid = params.get_pid();
 
-    Process processo_novo = Process(creation_data, duration, priority, pid);
+    Process processo_novo = Process(creation_data, duration, priority, pid); // Cria um novo processo
+
     cout << "\nKERNEL: Criando processo " << pid << " | Duração: " << duration << "s" << endl;
+
     processo_novo.setRemainingTime(duration);
     processo_novo.setState(NEW);
     return processo_novo;
@@ -62,11 +64,11 @@ void Kernel::create_scheduler(string scheduler_type)
 
 void Kernel::start_scheduler(string scheduler_type)
 {
-    create_scheduler(scheduler_type);
-    bool running = true;
+    create_scheduler(scheduler_type); // Cria o escalonador
+    bool running = true; 
 }
 
 void Kernel::send_process(Process processo)
 {
-    scheduler->receive_process(processo);
+    scheduler->receive_process(processo); // Envia o processo para o escalonador
 }

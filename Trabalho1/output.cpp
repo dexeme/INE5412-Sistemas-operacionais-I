@@ -8,7 +8,7 @@ using namespace std;
 class Output {
     public:
         void print_header(){
-            cout << "tempo  P1  P2  P3  P4" << endl;
+            cout << "tempo      P1  P2  P3  P4" << endl;
         }
 
     string getStatus(int pid, queue<Process> processos_prontos, queue<Process> processos_em_execucao) {
@@ -30,7 +30,7 @@ class Output {
     }
 
     void print_line(int current_time, queue<Process> processos_em_execucao, queue<Process> processos_prontos) {
-        cout << current_time - 1 << "-" << current_time << "   ";
+        cout << current_time - 1 << "-" << current_time << "       ";
         for (int i = 1; i <= 4; i++) {
             cout << getStatus(i, processos_prontos, processos_em_execucao);
         }

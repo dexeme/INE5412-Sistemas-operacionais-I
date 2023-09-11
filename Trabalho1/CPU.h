@@ -39,11 +39,18 @@ class CPU {
         int run_process(Process &processo, CPU &cpu){
             idle = false;
             processo.setState(RUNNING);
+            processo.setRunningTime(processo.getRunningTime() + 1);
+
             int remainingTime = processo.getRemainingTime();
+
+
             if (remainingTime > 0)
             {
             processo.setRemainingTime(remainingTime - 1);
-            cout << "CPU: Processo " << processo.getPid() << " rodando! | TR: " << processo.getRemainingTime() << "/" << processo.getDuration() << endl;
+            cout << "CPU: Processo " << processo.getPid() << " rodando! | TR: " << processo.getRemainingTime() << "/" << processo.getDuration() << " | RT: " << processo.getRunningTime() << "/" << '2' << endl;
+            }
+            else
+            {
             }
             return processo.getRemainingTime();
         }
