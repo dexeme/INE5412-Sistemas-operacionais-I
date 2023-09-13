@@ -29,7 +29,6 @@ bool execute() {
             }
             cout << "DEBUG: Processo atual selecionado: " << fila_de_prontos.front().getPid() << endl;
             cout << "DEBUG: Fila de prontos não está vazia! Próximo processo: " << fila_de_prontos.front().getPid() << " | TR: " << fila_de_prontos.front().getRemainingTime() << "/" << fila_de_prontos.front().getDuration() << endl;
-            int prioridade_atual = fila_de_executando.front().getPriority();
 
             Process& proximo_processo = get_next_process();
             fila_de_executando.push(proximo_processo);
@@ -47,17 +46,6 @@ bool execute() {
             }
             return !fila_de_prontos.empty(); // Retorna se a fila de prontos está vazia, para saber se o escalonador terminou
         }
-
-        // Parte da preempção
-        if (!fila_de_prontos.empty()) {
-            cout << "DEBUG: Checando se há processos de maior prioridade" << endl;
-            Process& proximo_processo = fila_de_prontos.front();
-            int prioridade_processo_atual = fila_de_executando.front().getPriority();
-            int prioridade_proximo_processo = proximo_processo.getPriority();
-            cout << "DEBUG: Prioridade do processo atual: " << prioridade_processo_atual << endl;
-            cout << "DEBUG: Prioridade do próximo processo: " << prioridade_proximo_processo << endl;
-            if (prioridade_proximo_processo > prioridade_processo_atual) {}
-            }
             int tempo_restante_do_processo_apos_execucao = cpu.run_process(fila_de_executando.front(), cpu);
 
             // Atualize o tempo restante do processo atual
@@ -67,14 +55,11 @@ bool execute() {
                 finish_process(fila_de_executando.front());
             }
             return !fila_de_prontos.empty();
-        } else {
+    } else {
             // Se não houver preempção, execute apenas o processo atual
-            int tempo_restante_do_processo_apos_execucao = cpu.run_process(fila_de_executando.front(), cpu);
+            cpu.run_process(fila_de_executando.front(), cpu);
 
-            // Atualize o tempo restante do processo atual
-            fila_de_executando.front().setRemainingTime(tempo_restante_do_processo_apos_execucao);
-
-            if (tempo_restante_do_processo_apos_execucao == 0) {
+            if (fila_de_executando.front().getRemainingTime() == 0) {
                 finish_process(fila_de_executando.front());
             }
         }

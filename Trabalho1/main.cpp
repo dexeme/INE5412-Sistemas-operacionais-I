@@ -44,6 +44,7 @@ int main()
         }
 
         current_time++;
+        cout << "                                    " << current_time << endl; 
 
         //queue<Process> running_queue = kernel.scheduler->get_running_queue();
 
