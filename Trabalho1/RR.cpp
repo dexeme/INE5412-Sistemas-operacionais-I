@@ -29,8 +29,6 @@ bool execute() {
         if (is_ready_queue_empty()) {
             return false;
         }
-        cout << "BUCETAAAA: Processo atual selecionado: " << fila_de_prontos.front().getPid() << endl;
-        cout << "DEBUG: Fila de prontos não está vazia! Próximo processo: " << fila_de_prontos.front().getPid() << " | TR: " << fila_de_prontos.front().getRemainingTime() << "/" << fila_de_prontos.front().getDuration() << endl;
 
         Process& proximo_processo = get_next_process();
         queue<Process>& running_queue = get_running_queue();
@@ -43,15 +41,17 @@ bool execute() {
         set_ready_queue(ready_queue);
 
         printa_fila_de_prontos();
+        cout << "DEBUG: Processo atual selecionado: " << fila_de_executando.front().getPid() << endl;
+        cout << "DEBUG: Fila de prontos não está vazia! Próximo processo: " << fila_de_prontos.front().getPid() << " | TR: " << fila_de_prontos.front().getRemainingTime() << "/" << fila_de_prontos.front().getDuration() << endl;
 
-        auto [remaining_time, quantum_time] = cpu.run_process(proximo_processo, cpu); // Executa o próximo processo na CPU
+        auto [remaining_time, quantum_time] = cpu.run_process(fila_de_executando.front(), cpu); // Executa o próximo processo na CPU
         
         // Atualize o tempo restante do processo atual
-        proximo_processo.setRemainingTime(remaining_time);
-        proximo_processo.setCurrentQuantum(quantum_time);
+        fila_de_executando.front().setRemainingTime(remaining_time);
+        fila_de_executando.front().setCurrentQuantum(quantum_time);
         
         if (remaining_time == 0) {
-            finish_process(proximo_processo); // Se o processo terminou, finaliza ele
+            finish_process(fila_de_executando.front()); // Se o processo terminou, finaliza ele
         }
         return !is_ready_queue_empty(); // Retorna se a fila de prontos está vazia, para saber se o escalonador terminou
     }
@@ -69,10 +69,23 @@ bool execute() {
 
         if (quantum_processo_atual == 2) {
             cout << "DEBUG: Processo atual é preemptado, pois chegou no quantum" << endl;
-            
             switch_process(fila_de_executando.front(), fila_de_prontos.front());
-            }
 
+            // seta o quantum do processo atual para 0
+            fila_de_executando.front().setCurrentQuantum(0);
+
+            // remove o processo atual da fila de executando e coloca ele na fila de prontos
+                        
+            fila_de_prontos.push(fila_de_executando.front());
+            fila_de_executando.push(proximo_processo);
+            fila_de_prontos.pop();
+            fila_de_executando.pop();
+            set_running_queue(fila_de_executando);
+            set_ready_queue(fila_de_prontos);
+
+            printa_fila_de_prontos();
+            }
+            cout << "PREEMPTOU: Processo atual selecionado: " << fila_de_executando.front().getPid() << endl;
             auto [remaining_time, quantum_time] = cpu.run_process(fila_de_executando.front(), cpu); // Executa o próximo processo na CPU
             
             // Atualize o tempo restante do processo atual
@@ -80,7 +93,7 @@ bool execute() {
             fila_de_executando.front().setCurrentQuantum(quantum_time);
             
             if (remaining_time == 0) {
-                finish_process(proximo_processo); // Se o processo terminou, finaliza ele
+                finish_process(fila_de_executando.front()); // Se o processo terminou, finaliza ele
             }
 
             return !is_ready_queue_empty();

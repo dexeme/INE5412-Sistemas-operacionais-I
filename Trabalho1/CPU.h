@@ -44,17 +44,19 @@ class CPU {
             processo.setRunningTime(processo.getRunningTime() + 1);
             processo.setCurrentQuantum(processo.getCurrentQuantum() + 1);
 
-            int remainingTime = processo.getRemainingTime();
             int quantumTime = processo.getCurrentQuantum();
 
-            if (remainingTime > 0)
+            if (processo.getRemainingTime() > 0)
             {
-            processo.setRemainingTime(remainingTime - 1);
+            processo.setRemainingTime(processo.getRemainingTime() - 1);
             cout << "CPU: Processo " << processo.getPid() << " rodando! | TR: " << processo.getRemainingTime() << "/" << processo.getDuration() << " | RT: " << processo.getRunningTime() << "/" << '2' << endl;
             }
             else
             {
             }
+
+            int remainingTime = processo.getRemainingTime();
+
             return {remainingTime, quantumTime};
         }
 

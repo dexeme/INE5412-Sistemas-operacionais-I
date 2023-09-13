@@ -138,19 +138,11 @@ public:
 
     void switch_process(Process& processo_atual, Process& processo_novo) {
         cout << "DEBUG: Trocando processo " << processo_atual.getPid() << " por processo " << processo_novo.getPid() << endl;
-        printa_fila_de_prontos();
-        clear_running_queue();
-        processo_novo.setState(RUNNING);
-        running_queue.push(processo_novo);
 
+        processo_novo.setState(RUNNING);
         processo_atual.setState(READY);
         processo_atual.setDuration(processo_atual.getRemainingTime());
-        ready_queue.pop();
-        ready_queue.push(processo_atual);
-        organize_ready_queue(ready_queue, "RR");
-        printa_fila_de_prontos();
-        //cpu.save_context(processo_atual);
-        //cpu.restore_context(processo_novo);
+
     }
 
     void printa_fila_de_prontos() {
