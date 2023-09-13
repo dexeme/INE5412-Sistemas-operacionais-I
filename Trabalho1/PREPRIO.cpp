@@ -68,7 +68,6 @@ bool execute() {
         cout << "DEBUG: Prioridade do próximo processo: " << prioridade_proximo_processo << endl;
         if (prioridade_proximo_processo > prioridade_processo_atual) {
             cout << "DEBUG: Processo atual é preemptado" << endl; // ISSO
-            switch_process(fila_de_executando.front(), proximo_processo);
         }
         int tempo_restante_do_processo_apos_execucao = cpu.run_process(fila_de_executando.front(), cpu);
         

@@ -73,8 +73,6 @@ bool execute() {
 
     bool check_preemption(Process processo_atual) { return false; } // FCFS não tem preempção
 
-    void organize_ready_queue(queue<Process> ready_queue) { } // FCFS não precisa organizar a fila de prontos
-
     void printa_fila_de_prontos() {
         cout << "DEBUG: Fila de prontos: ";
         queue<Process> fila_de_prontos = get_ready_queue();
