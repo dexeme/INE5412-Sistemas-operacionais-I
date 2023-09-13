@@ -36,8 +36,6 @@ Process Kernel::create_process(ProcessParams params)
 
     Process processo_novo = Process(creation_data, duration, priority, pid); // Cria um novo processo
 
-    cout << "\nKERNEL: Criando processo " << pid << " | Duração: " << duration << "s" << endl;
-
     processo_novo.setRemainingTime(duration);
     processo_novo.setState(NEW);
     return processo_novo;

@@ -49,7 +49,6 @@ class CPU {
             if (processo.getRemainingTime() > 0)
             {
             processo.setRemainingTime(processo.getRemainingTime() - 1);
-            cout << "CPU: Processo " << processo.getPid() << " rodando! | TR: " << processo.getRemainingTime() << "/" << processo.getDuration() << " | RT: " << processo.getRunningTime() << "/" << '2' << endl;
             }
             else
             {

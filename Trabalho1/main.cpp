@@ -26,13 +26,16 @@ int main()
     vector<ProcessParams> process_params = file.get_processes(); // Pega os parâmetros dos processos do arquivo
 
     bool running = true;
+
     int current_time = 0; // Tempo atual do sistema
 
     string scheduler_type = "PREPRIO"; // Tipo de escalonador
-    
+
+    int count = 0;
+
     output.print_header(); // Imprime "tempo      P1  P2  P3  P4"
 
-    while (running) // Enquanto o escalonador não terminar de executar todos os processos
+    while (running && count < 15) // Enquanto o escalonador não terminar de executar todos os processos
     {
         for (ProcessParams process : process_params)
         {
@@ -44,15 +47,11 @@ int main()
         }
 
         current_time++;
-        cout << "                                    " << current_time << endl; 
+        count++;
 
-        //queue<Process> running_queue = kernel.scheduler->get_running_queue();
+        output.print_line(current_time, kernel.scheduler->get_running_queue(), kernel.scheduler->get_ready_queue()); // Imprime a linha da saída
 
-        //queue<Process> ready_queue = kernel.scheduler->get_ready_queue();
-
-        //output.print_line(current_time, running_queue, ready_queue);
-
-        sleep(1); // Espera 1 segundo
+        sleep(0.01); // Espera 1 segundo
 
         kernel.scheduler->execute(); // Executa o escalonador
     }

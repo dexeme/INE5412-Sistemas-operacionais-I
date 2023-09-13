@@ -50,10 +50,8 @@ public:
     // Remove o processo da fila de prontos e o coloca na fila de finalizados
     void finish_process(Process& processo) {
         processo.setState(FINISHED);
-        cout << "DEBUG: Processo " << processo.getPid() << " finalizado." << endl;
         finished_queue.push(processo); // Adiciona o processo na fila de finalizados
         running_queue.pop(); // Remove o processo da fila de executando
-        printa_fila_de_prontos(); // DEBUG
     }
 
     Process& get_next_process() {
@@ -74,7 +72,6 @@ public:
         process.setRemainingTime(process.getDuration());
         ready_queue.push(process);
         organize_ready_queue(ready_queue, sched);
-        printa_fila_de_prontos();
     }
 
     virtual bool execute() = 0;
@@ -96,16 +93,12 @@ public:
     if (scheduler_type == "FCFS") {
         // Ordena a fila de prontos por ordem de chegada
         sort(processos.begin(), processos.end(), [](Process a, Process b) {
-            cout << "DEBUG: Comparando processos " << a.getPid() << " e " << b.getPid() << endl;
-            cout << "DEBUG: Organizando fila do FCFS" << endl;
             return a.getCreationTime() < b.getCreationTime();
         });
     }
     if (scheduler_type == "SJF") {
         // Ordena a fila de prontos por ordem de chegada
         sort(processos.begin(), processos.end(), [](Process a, Process b) {
-            cout << "DEBUG: Comparando processos " << a.getPid() << " e " << b.getPid() << endl;
-            cout << "DEBUG: Organizando fila do SJF" << endl;
             return a.getDuration() < b.getDuration();
         });
     }
@@ -115,16 +108,12 @@ public:
     if (scheduler_type == "PRIO") {
         // Ordena a fila de prontos por ordem de chegada
         sort(processos.begin(), processos.end(), [](Process a, Process b) {
-            cout << "DEBUG: Comparando processos " << a.getPid() << " e " << b.getPid() << endl;
-            cout << "DEBUG: Organizando fila do PRIO" << endl;
             return a.getPriority() > b.getPriority();
         });
     }
     if (scheduler_type == "PREPRIO") {
         // Ordena a fila de prontos por ordem de chegada
         sort(processos.begin(), processos.end(), [](Process a, Process b) {
-            cout << "DEBUG: Comparando processos " << a.getPid() << " e " << b.getPid() << endl;
-            cout << "DEBUG: Organizando fila do PREPRIO" << endl;
             return a.getPriority() > b.getPriority();
         });
     }
@@ -137,26 +126,12 @@ public:
 
 
     void switch_process(Process& processo_atual, Process& processo_novo) {
-        cout << "DEBUG: Trocando processo " << processo_atual.getPid() << " por processo " << processo_novo.getPid() << endl;
 
         processo_novo.setState(RUNNING);
         processo_atual.setState(READY);
         processo_atual.setDuration(processo_atual.getRemainingTime());
 
     }
-
-    void printa_fila_de_prontos() {
-        cout << "READY-QUEUE: [";
-        queue<Process> fila_de_prontos = get_ready_queue();
-        while (!fila_de_prontos.empty()) {
-            cout << fila_de_prontos.front().getPid();
-            fila_de_prontos.pop();
-            if (!fila_de_prontos.empty()) {
-                cout << ", ";
-            }
-        }
-        cout << "]" << endl;
-    }  
 };
 
 #endif

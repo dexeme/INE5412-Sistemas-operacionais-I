@@ -15,7 +15,7 @@ public:
     ~FCFS() {}
 
 bool execute() {
-    printa_fila_de_prontos(); // DEBUG
+
     Process* processo_atual = get_current_process();
     CPU &cpu = get_cpu();
     queue<Process>& fila_de_prontos = get_ready_queue();
@@ -23,18 +23,14 @@ bool execute() {
 
     if (!processo_atual) { // Se o processo atual é nulo
         if (fila_de_executando.empty()) {
-            cout << "NULLPTR: Processo atual é nulo" << endl;
             if (fila_de_prontos.empty()) {
                 return false;
             }
-            cout << "DEBUG: Processo atual selecionado: " << fila_de_prontos.front().getPid() << endl;
-            cout << "DEBUG: Fila de prontos não está vazia! Próximo processo: " << fila_de_prontos.front().getPid() << " | TR: " << fila_de_prontos.front().getRemainingTime() << "/" << fila_de_prontos.front().getDuration() << endl;
 
             Process& proximo_processo = get_next_process();
             fila_de_executando.push(proximo_processo);
             fila_de_prontos.pop();
 
-            printa_fila_de_prontos();
 
             cpu.run_process(proximo_processo, cpu); // Executa o próximo processo na CPU
 
@@ -74,13 +70,4 @@ bool execute() {
 
     bool check_preemption(Process processo_atual) { return false; } // FCFS não tem preempção
 
-    void printa_fila_de_prontos() {
-        cout << "DEBUG: Fila de prontos: ";
-        queue<Process> fila_de_prontos = get_ready_queue();
-        while (!fila_de_prontos.empty()) {
-            cout << fila_de_prontos.front().getPid() << " ";
-            fila_de_prontos.pop();
-        }
-        cout << endl;
-    }
 };
