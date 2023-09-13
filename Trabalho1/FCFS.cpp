@@ -46,12 +46,13 @@ bool execute() {
             }
             return !fila_de_prontos.empty(); // Retorna se a fila de prontos está vazia, para saber se o escalonador terminou
         }
-            int tempo_restante_do_processo_apos_execucao = cpu.run_process(fila_de_executando.front(), cpu);
+            auto [remaining_time, quantum_time] = cpu.run_process(fila_de_executando.front(), cpu); // Executa o próximo processo na CPU
 
             // Atualize o tempo restante do processo atual
-            fila_de_executando.front().setRemainingTime(tempo_restante_do_processo_apos_execucao);
+            fila_de_executando.front().setRemainingTime(remaining_time);
+            fila_de_executando.front().setCurrentQuantum(quantum_time);
 
-            if (tempo_restante_do_processo_apos_execucao == 0) {
+            if (remaining_time == 0) {
                 finish_process(fila_de_executando.front());
             }
             return !fila_de_prontos.empty();

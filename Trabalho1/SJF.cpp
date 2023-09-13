@@ -70,23 +70,24 @@ bool execute() {
         if (prioridade_proximo_processo > prioridade_processo_atual) {
             cout << "DEBUG: Processo atual é preemptado" << endl; // ISSO
         }
-        int tempo_restante_do_processo_apos_execucao = cpu.run_process(fila_de_executando.front(), cpu);
+
+        auto [remaining_time, quantum_time] = cpu.run_process(fila_de_executando.front(), cpu);
+
+        fila_de_executando.front().setRemainingTime(remaining_time);
+        fila_de_executando.front().setCurrentQuantum(quantum_time);
         
-        // Atualize o tempo restante do processo atual
-        fila_de_executando.front().setRemainingTime(tempo_restante_do_processo_apos_execucao);
-        
-        if (tempo_restante_do_processo_apos_execucao == 0) {
+        if (remaining_time == 0) {
             finish_process(fila_de_executando.front());
         }
         return !is_ready_queue_empty();
     } else {
         // Se não houver preempção, execute apenas o processo atual
-        int tempo_restante_do_processo_apos_execucao = cpu.run_process(fila_de_executando.front(), cpu);
+        auto [remaining_time, quantum_time] = cpu.run_process(fila_de_executando.front(), cpu);
+
+        fila_de_executando.front().setRemainingTime(remaining_time);
+        fila_de_executando.front().setCurrentQuantum(quantum_time);
         
-        // Atualize o tempo restante do processo atual
-        fila_de_executando.front().setRemainingTime(tempo_restante_do_processo_apos_execucao);
-        
-        if (tempo_restante_do_processo_apos_execucao == 0) {
+        if (remaining_time == 0) {
             finish_process(fila_de_executando.front());
         }
     }

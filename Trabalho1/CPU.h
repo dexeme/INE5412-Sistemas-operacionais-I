@@ -36,13 +36,16 @@ class CPU {
         
         virtual ~CPU() {}
         
-        int run_process(Process &processo, CPU &cpu){
+        tuple<int, int> run_process(Process &processo, CPU &cpu){
+
             idle = false;
+
             processo.setState(RUNNING);
             processo.setRunningTime(processo.getRunningTime() + 1);
+            processo.setCurrentQuantum(processo.getCurrentQuantum() + 1);
 
             int remainingTime = processo.getRemainingTime();
-
+            int quantumTime = processo.getCurrentQuantum();
 
             if (remainingTime > 0)
             {
@@ -52,7 +55,7 @@ class CPU {
             else
             {
             }
-            return processo.getRemainingTime();
+            return {remainingTime, quantumTime};
         }
 
 

@@ -110,12 +110,7 @@ public:
         });
     }
     if (scheduler_type == "RR") {
-        // Ordena a fila de prontos por ordem de chegada
-        sort(processos.begin(), processos.end(), [](Process a, Process b) {
-            cout << "DEBUG: Comparando processos " << a.getPid() << " e " << b.getPid() << endl;
-            cout << "DEBUG: Organizando fila do RR" << endl;
-            return a.getCreationTime() < b.getCreationTime();
-        });
+        return;
     }
     if (scheduler_type == "PRIO") {
         // Ordena a fila de prontos por ordem de chegada
@@ -152,7 +147,7 @@ public:
         processo_atual.setDuration(processo_atual.getRemainingTime());
         ready_queue.pop();
         ready_queue.push(processo_atual);
-        organize_ready_queue(ready_queue, "PREPRIO");
+        organize_ready_queue(ready_queue, "RR");
         printa_fila_de_prontos();
         //cpu.save_context(processo_atual);
         //cpu.restore_context(processo_novo);

@@ -28,7 +28,7 @@ int main()
     bool running = true;
     int current_time = 0; // Tempo atual do sistema
 
-    string scheduler_type = "PREPRIO"; // Tipo de escalonador
+    string scheduler_type = "RR"; // Tipo de escalonador
     
     output.print_header(); // Imprime "tempo      P1  P2  P3  P4"
 

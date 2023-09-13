@@ -17,6 +17,7 @@ Process::Process(int c, int d, int p, int i) {
     priority = p;
     state = ProcessState::NEW;
     context = new Context(0, 0, 0, 0);
+    current_quantum = 0;
 }
 
 // Get pid
@@ -56,5 +57,11 @@ int Process::getPriority() { return priority; }
 
 // Get is finished
 bool Process::is_finished() { return remaining_time = 0; }
+
+// Get current quantum
+int Process::getCurrentQuantum() { return current_quantum; }
+
+// Set current quantum
+void Process::setCurrentQuantum(int quantum) { current_quantum = quantum; }
 
 

@@ -63,6 +63,12 @@ public:
     // Is finished
     bool is_finished();
 
+    // Get current_quantum
+    int getCurrentQuantum();
+
+    // Set current_quantum
+    void setCurrentQuantum(int quantum);
+
 private:
     int pid;
     int creation_time;
@@ -73,6 +79,7 @@ private:
     int remaining_time;
     int finish_time;
     Context *context;
+    int current_quantum;
 };
 
 #endif
