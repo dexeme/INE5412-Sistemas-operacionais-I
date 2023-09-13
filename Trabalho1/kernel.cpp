@@ -24,7 +24,7 @@ void Kernel::start()
 {
     cout << "KERNEL: Kernel iniciado\n"
          << endl;
-    start_scheduler("PRIO");
+    start_scheduler("PREPRIO");
 }
 
 Process Kernel::create_process(ProcessParams params)
