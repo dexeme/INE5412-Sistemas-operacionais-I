@@ -14,9 +14,9 @@ public:
 
 bool execute() {
 
-
     queue<Process>& fila_de_executando = get_running_queue();
     queue<Process>& fila_de_prontos = get_ready_queue();
+    clear_finished_queue();
     CPU &cpu = get_cpu();
 
     if (!is_running_queue_empty()) {

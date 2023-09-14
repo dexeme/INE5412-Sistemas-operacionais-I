@@ -42,6 +42,12 @@ public:
 
     void set_current_process(Process* current_process) { this->current_process = current_process; }
 
+    queue<Process>& get_finish_queue() { return finished_queue; }
+
+    void clear_finished_queue() { finished_queue = queue<Process>(); }
+
+    void set_finish_queue(queue<Process> finished_queue) { this->finished_queue = finished_queue; }
+
     Process* get_current_process() { return current_process; }
 
 
@@ -67,7 +73,7 @@ public:
     }
 
 
-    void receive_process(Process& process, string sched) {
+    void receive_process(Process& process, unsigned int sched) {
         process.setState(READY);
         process.setRemainingTime(process.getDuration());
         ready_queue.push(process);
@@ -84,34 +90,34 @@ public:
     queue<Process> get_new_queue() {return new_queue;}
 
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
-    void  organize_ready_queue(queue<Process> ready_queue, string scheduler_type) {
+    void  organize_ready_queue(queue<Process> ready_queue, unsigned int scheduler_type) {
     vector<Process> processos;
     while (!ready_queue.empty()) {
         processos.push_back(ready_queue.front());
         ready_queue.pop();
     }
-    if (scheduler_type == "FCFS") {
+    if (scheduler_type == 0) {
         // Ordena a fila de prontos por ordem de chegada
         sort(processos.begin(), processos.end(), [](Process a, Process b) {
             return a.getCreationTime() < b.getCreationTime();
         });
     }
-    if (scheduler_type == "SJF") {
+    if (scheduler_type == 1) {
         // Ordena a fila de prontos por ordem de chegada
         sort(processos.begin(), processos.end(), [](Process a, Process b) {
             return a.getDuration() < b.getDuration();
         });
     }
-    if (scheduler_type == "RR") {
+    if (scheduler_type == 4) {
         return;
     }
-    if (scheduler_type == "PRIO") {
+    if (scheduler_type == 2) {
         // Ordena a fila de prontos por ordem de chegada
         sort(processos.begin(), processos.end(), [](Process a, Process b) {
             return a.getPriority() > b.getPriority();
         });
     }
-    if (scheduler_type == "PREPRIO") {
+    if (scheduler_type == 3) {
         // Ordena a fila de prontos por ordem de chegada
         sort(processos.begin(), processos.end(), [](Process a, Process b) {
             return a.getPriority() > b.getPriority();

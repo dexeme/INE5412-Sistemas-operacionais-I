@@ -4,12 +4,12 @@
 #include <vector>
 
 #include "process.h"
-#include "process.cc"
+#include "process.cpp"
 #include "scheduler.h"
 #include "process_params.h"
 #include "kernel.h"
 #include "file.h"
-#include "file.cc"
+#include "file.cpp"
 #include "FCFS.cpp"
 #include "SJF.cpp"
 #include "RR.cpp"
@@ -17,14 +17,15 @@
 #include "PREPRIO.cpp"
 #include "ARM.cpp"
 #include "CPU.h"
+#include "output.cpp"
 
 using namespace std;
 
-void Kernel::start()
+void Kernel::start(unsigned int scheduler_type)
 {
     cout << "KERNEL: Kernel iniciado\n"
          << endl;
-    start_scheduler("PREPRIO");
+    start_scheduler(scheduler_type);
 }
 
 Process Kernel::create_process(ProcessParams params)
@@ -41,32 +42,91 @@ Process Kernel::create_process(ProcessParams params)
     return processo_novo;
 }
 
-void Kernel::create_scheduler(string scheduler_type)
+void Kernel::create_scheduler(unsigned int scheduler_type)
 {
-    if (scheduler_type == "FCFS" || scheduler_type == "SJF" || scheduler_type == "RR" || scheduler_type == "PRIO" || scheduler_type == "PREPRIO") 
+    string scheduler_name = "";
+
+    if (scheduler_type == 0 || scheduler_type == 1 || scheduler_type == 2 || scheduler_type == 3 || scheduler_type == 4) 
     {
-        cout << "KERNEL: Iniciando " << scheduler_type << "\n" << endl;
+
         ARM cpu = ARM();
-        // TODO: Implementar criação de scheduler
-        if (scheduler_type == "FCFS") { scheduler = new FCFS(cpu); }
-        if (scheduler_type == "SJF") { scheduler = new SJF(cpu); }
-        if (scheduler_type == "PRIO") { scheduler = new PRIO(cpu); }
-        if (scheduler_type == "PREPRIO") { scheduler = new PREPRIO(cpu); }
-        if (scheduler_type == "RR") { scheduler = new RR(cpu); }
+
+        if (scheduler_type == 0) { scheduler = new FCFS(cpu); scheduler_name = "FCFS (First Come, First Served)"; }
+        if (scheduler_type == 1) { scheduler = new SJF(cpu); scheduler_name = "Shortest Job First"; }
+        if (scheduler_type == 2) { scheduler = new PRIO(cpu); scheduler_name = "Por prioridade, sem preempção"; }
+        if (scheduler_type == 3) { scheduler = new PREPRIO(cpu); scheduler_name = "Por prioridade, com preempção por prioridade"; }
+        if (scheduler_type == 4) { scheduler = new RR(cpu); scheduler_name = "Round-Robin"; }
+
+        cout << "KERNEL: Iniciando " << scheduler_name << "\n" << endl;
 
     } else {
         cout << "KERNEL: Scheduler não reconhecido!" << endl;
-        return;
+        cout << "KERNEL: Os escalonadores disponíveis são: \n\n"
+             <<         "0 - FCFS (First Come, First Served)\n"
+             <<         "1 - SJF (Shortest Job First)\n"
+             <<         "2 - PRIO (Por prioridade, sem preempção)\n"
+             <<         "3 - PREPRIO (Por prioridade, com preempção por prioridade)\n"
+             <<         "4 - RR (Round-Robin)\n"
+                << endl;
+        exit(1);
     }
 }
 
-void Kernel::start_scheduler(string scheduler_type)
+void Kernel::start_scheduler(unsigned int scheduler_type)
 {
-    create_scheduler(scheduler_type); // Cria o escalonador
-    bool running = true; 
+    // Lê arquivo de entrada
+    File file;
+    file.read_file(); 
+    vector<ProcessParams> process_params = file.get_processes();
+
+    // Cria o escalonador
+    create_scheduler(scheduler_type);
+
+    // Indica se o sistema está ativo
+    bool running = true;
+
+    // Tempo atual do sistema
+    int current_time = 0;
+
+    int count = 0;
+
+    // Classe responsável por imprimir os dados de saída
+    Output output;
+    output.print_header();
+
+    while (running && count < 16) // Enquanto o escalonador não terminar de executar todos os processos
+    {
+        for (ProcessParams process : process_params)
+        {
+            if (process.get_creation_data() == current_time) // Se o processo deve ser criado nesse tempo
+            {
+                Process new_process = create_process(process); // Cria o processo
+                send_process(new_process, scheduler_type); // Envia o processo para o escalonador
+            }
+        }
+
+        running = scheduler->execute(); // Executa o escalonador
+        output.print_line(current_time, scheduler->get_running_queue(), scheduler->get_ready_queue(), scheduler->get_finish_queue()); // Imprime a linha da saída
+        sleep(0.1); // Espera 1 segundo
+        current_time++;
+        count++;
+
+
+
+
+        // evita que a ultima execucao de cada processo não seja impressa
+        // nao tem a ver com o count
+
+
+
+
+
+        
+    }
+
 }
 
-void Kernel::send_process(Process processo, string scheduler_type)
+void Kernel::send_process(Process processo, unsigned int scheduler_type)
 {
     scheduler->receive_process(processo, scheduler_type); // Envia o processo para o escalonador
 }

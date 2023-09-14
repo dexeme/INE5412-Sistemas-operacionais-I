@@ -9,52 +9,25 @@
 #include "kernel.cpp"
 #include "kernel.h"
 #include "process_params.h"
-#include "output.cpp"
+
 
 using namespace std;
 
-int main()
+int main(int argc, char** argv)
 {
-    Kernel kernel;
-    kernel.start(); // Inicia o sistema
+    // make [ entrada ] [ scheduler ]
 
-    File file;
-    file.read_file(); // Lê o arquivo de entrada
-
-    Output output; // Classe responsável por imprimir os dados de saída
-
-    vector<ProcessParams> process_params = file.get_processes(); // Pega os parâmetros dos processos do arquivo
-
-    bool running = true;
-
-    int current_time = 0; // Tempo atual do sistema
-
-    string scheduler_type = "PREPRIO"; // Tipo de escalonador
-
-    int count = 0;
-
-    output.print_header(); // Imprime "tempo      P1  P2  P3  P4"
-
-    while (running && count < 15) // Enquanto o escalonador não terminar de executar todos os processos
-    {
-        for (ProcessParams process : process_params)
-        {
-            if (process.get_creation_data() == current_time) // Se o processo deve ser criado nesse tempo
-            {
-                Process new_process = kernel.create_process(process); // Cria o processo
-                kernel.send_process(new_process, scheduler_type); // Envia o processo para o escalonador
-            }
-        }
-
-        current_time++;
-        count++;
-
-        output.print_line(current_time, kernel.scheduler->get_running_queue(), kernel.scheduler->get_ready_queue()); // Imprime a linha da saída
-
-        sleep(0.01); // Espera 1 segundo
-
-        kernel.scheduler->execute(); // Executa o escalonador
+    if (argc < 1) {
+        std::cout << "Usage: ./scheduler <input_file> scheduler_type (optional)" << std::endl;
+        return 1;
     }
+
+    unsigned int scheduler_type = 0;
+
+    if (argc == 2) { scheduler_type = atoi(argv[1]); } // Se o tipo de escalonador foi passado como parâmetro
+
+    Kernel kernel;
+    kernel.start(scheduler_type); // Inicia o sistema
 
     return 0;
 }

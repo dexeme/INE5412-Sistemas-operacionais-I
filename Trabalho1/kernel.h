@@ -20,13 +20,13 @@ class Kernel {
 
         Kernel() {}
 
-        void start();
+        void start(unsigned int scheduler_type);
         
         Process create_process(ProcessParams p);
 
-        void create_scheduler(string scheduler_type);
-        void start_scheduler(string scheduler_type);
-        void send_process(Process processo, string scheduler_type);
+        void create_scheduler(unsigned int scheduler_type);
+        void start_scheduler(unsigned int scheduler_type);
+        void send_process(Process processo, unsigned int scheduler_type);
 
         
 };
