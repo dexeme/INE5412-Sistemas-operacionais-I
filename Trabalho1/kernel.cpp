@@ -94,7 +94,7 @@ void Kernel::start_scheduler(unsigned int scheduler_type)
     Output output;
     output.print_header();
 
-    while (running && count < 16) // Enquanto o escalonador não terminar de executar todos os processos
+    while (running) // Enquanto o escalonador não terminar de executar todos os processos
     {
         for (ProcessParams process : process_params)
         {
@@ -110,17 +110,6 @@ void Kernel::start_scheduler(unsigned int scheduler_type)
         sleep(0.1); // Espera 1 segundo
         current_time++;
         count++;
-
-
-
-
-        // evita que a ultima execucao de cada processo não seja impressa
-        // nao tem a ver com o count
-
-
-
-
-
         
     }
 

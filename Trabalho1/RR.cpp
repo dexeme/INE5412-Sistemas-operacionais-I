@@ -14,18 +14,18 @@ public:
 
 bool execute() {
 
-    queue<Process>& fila_de_executando = get_running_queue();
-    queue<Process>& fila_de_prontos = get_ready_queue();
     clear_finished_queue();
     CPU &cpu = get_cpu();
+    queue<Process>& fila_de_prontos = get_ready_queue();
+    queue<Process>& fila_de_executando = get_running_queue();
 
-    if (!is_running_queue_empty()) {
+    if (fila_de_executando.empty()) { // Se o processo atual é nulo
         if (is_ready_queue_empty()) {
+            cout << "Fila de prontos vazia, executando ultimo processo" << endl;
         }
     }
     if (is_running_queue_empty()) { // Se o processo atual é nulo
         if (is_ready_queue_empty()) {
-            return false;
         }
 
         Process& proximo_processo = get_next_process();
@@ -53,8 +53,6 @@ bool execute() {
     
     // Parte da preempção
     if (!is_ready_queue_empty()) {
-
-
         Process& proximo_processo = fila_de_prontos.front();
         int quantum_processo_atual = fila_de_executando.front().getCurrentQuantum();
 

@@ -18,13 +18,13 @@ bool execute() {
 
     Process* processo_atual = get_current_process();
     CPU &cpu = get_cpu();
+    clear_finished_queue();
     queue<Process>& fila_de_prontos = get_ready_queue();
     queue<Process>& fila_de_executando = get_running_queue();
 
     if (!processo_atual) { // Se o processo atual é nulo
         if (fila_de_executando.empty()) {
             if (fila_de_prontos.empty()) {
-                return false;
             }
 
             Process& proximo_processo = get_next_process();
