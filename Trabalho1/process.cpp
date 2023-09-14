@@ -67,5 +67,11 @@ int Process::getFinishTime() { return finish_time; }
 // Set finish time
 void Process::setFinishTime(int time) { finish_time = time; }
 
+// Get waiting time
+int Process::getWaitingTime() { return waiting_time; }
+
+// Set waiting time
+void Process::setWaitingTime(int time) { waiting_time = time; }
+
 
 

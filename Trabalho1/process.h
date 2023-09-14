@@ -70,6 +70,10 @@ public:
 
     void setFinishTime(int time);
 
+    int getWaitingTime();
+
+    void setWaitingTime(int time);
+
 private:
     int pid;
     int creation_time;
@@ -79,6 +83,7 @@ private:
     int running_time;
     int remaining_time;
     int finish_time;
+    int waiting_time;
     Context *context;
     int current_quantum;
 };
