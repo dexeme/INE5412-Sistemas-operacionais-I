@@ -65,6 +65,7 @@ public:
 
     // Remove o processo da fila de prontos e o coloca na fila de finalizados
     void finish_process(Process& processo) {
+        total_context_changes++;
         processo.setState(FINISHED);
         processo.setFinishTime(get_current_time() - processo.getCreationTime()); // Define o tempo de término do processo
         finished_queue.push(processo); // Adiciona o processo na fila de finalizados

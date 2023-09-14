@@ -63,7 +63,7 @@ public:
     void print_process_information(queue<Process> ready_to_print_info) {
         int total_turnaround_time = 0;
         int total_process = 0;
-        cout << "Processo  Turnaround time     Waiting time" << endl;
+        cout << "Processo  Turnaround time          Waiting time" << endl;
         while (!ready_to_print_info.empty()) {
             total_turnaround_time += ready_to_print_info.front().getFinishTime() + 1;
             total_process++;
