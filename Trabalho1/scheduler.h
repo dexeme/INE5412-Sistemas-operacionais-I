@@ -17,14 +17,20 @@ private:
     queue<Process> ready_queue;
     queue<Process> running_queue;
     queue<Process> finished_queue;
+    queue<Process> ready_to_print_info;
     Process* current_process;
     CPU& cpu;
+    int current_time;
 
 
 public:
 
 
     Scheduler(CPU& _cpu) : cpu(_cpu), current_process(nullptr) {}
+
+    int get_current_time() { return current_time; }
+
+    void set_current_time(int time) { current_time = time; }
 
     void clear_ready_queue() { ready_queue = queue<Process>(); }
 
@@ -37,6 +43,8 @@ public:
     bool is_new_queue_empty() { return new_queue.empty(); }
 
     queue<Process>& get_running_queue() { return running_queue; }
+
+    queue<Process>& get_ready_to_print_info() { return ready_to_print_info; }
 
     void set_running_queue(queue<Process> running_queue) { this->running_queue = running_queue; }
 
@@ -56,16 +64,17 @@ public:
     // Remove o processo da fila de prontos e o coloca na fila de finalizados
     void finish_process(Process& processo) {
         processo.setState(FINISHED);
+        processo.setFinishTime(get_current_time() - processo.getCreationTime()); // Define o tempo de término do processo
         finished_queue.push(processo); // Adiciona o processo na fila de finalizados
+        ready_to_print_info.push(processo);
         running_queue.pop(); // Remove o processo da fila de executando
     }
 
     Process& get_next_process() {
         if (!ready_queue.empty()) {
-
             return ready_queue.front();
         } else {
-            throw std::runtime_error("A fila de prontos está vazia.");
+
         }
     }
 

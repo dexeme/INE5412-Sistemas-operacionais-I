@@ -109,9 +109,11 @@ void Kernel::start_scheduler(unsigned int scheduler_type)
         output.print_line(current_time, scheduler->get_running_queue(), scheduler->get_ready_queue(), scheduler->get_finish_queue()); // Imprime a linha da saída
         sleep(0.1); // Espera 1 segundo
         current_time++;
+        scheduler->set_current_time(current_time); // Atualiza o tempo atual do escalonador
         count++;
         
     }
+    output.print_process_information(scheduler->get_ready_to_print_info());
 
 }
 

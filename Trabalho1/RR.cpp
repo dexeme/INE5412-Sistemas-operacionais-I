@@ -20,6 +20,7 @@ bool execute() {
 
     if (fila_de_executando.empty()) {
         if (is_ready_queue_empty()) {
+            return false;
         }
     }
 

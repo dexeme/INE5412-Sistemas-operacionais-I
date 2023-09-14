@@ -37,9 +37,6 @@ int Process::getRemainingTime() { return remaining_time; }
 
 void Process::setRemainingTime(int time) { remaining_time = time; }
 
-// Get finish time
-int Process::getFinishTime() { return finish_time; }
-
 // Get state
 int Process::getState() { return state; }
 
@@ -63,5 +60,12 @@ int Process::getCurrentQuantum() { return current_quantum; }
 
 // Set current quantum
 void Process::setCurrentQuantum(int quantum) { current_quantum = quantum; }
+
+// Get finish time
+int Process::getFinishTime() { return finish_time; }
+
+// Set finish time
+void Process::setFinishTime(int time) { finish_time = time; }
+
 
 

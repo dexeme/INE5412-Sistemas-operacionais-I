@@ -51,4 +51,20 @@ public:
         }
         cout << endl;
     }
+
+    // Turnaround time (tempo transcorrido desde o momento em que o processo é criado até o
+    // instante em que termina sua execução). Imprimir o turnaround time para cada processo e
+    // também o valor médio.
+    // • Tempo média de espera (soma dos períodos em que o processo estava no seu estado pronto).
+    // • Número total de trocas de contexto (considerar que na primeira execução do primeiro
+    // processo há uma troca de contexto).
+    // • Diagrama de tempo de execução.
+
+    void print_process_information(queue<Process> ready_to_print_info) {
+        cout << "Processo  Turnaround time" << endl;
+        while (!ready_to_print_info.empty()) {
+            cout << setw(8) << left << ready_to_print_info.front().getPid() << setw(10) << right << ready_to_print_info.front().getFinishTime() + 1 << setw(24) << right << endl;
+            ready_to_print_info.pop();
+        }
+    }
 };

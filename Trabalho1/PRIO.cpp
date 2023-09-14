@@ -24,6 +24,7 @@ bool execute() {
     if (!processo_atual) { // Se o processo atual é nulo
         if (fila_de_executando.empty()) {
             if (fila_de_prontos.empty()) {
+                return false;
             }
 
             Process& proximo_processo = get_next_process();

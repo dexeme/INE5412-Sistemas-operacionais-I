@@ -39,9 +39,6 @@ public:
     // Set remaining time
     void setRemainingTime(int time);
 
-    // Get finish time
-    int getFinishTime();
-
 	// Get duration
     int getDuration() const;
 
@@ -68,6 +65,10 @@ public:
 
     // Set current_quantum
     void setCurrentQuantum(int quantum);
+
+    int getFinishTime();
+
+    void setFinishTime(int time);
 
 private:
     int pid;

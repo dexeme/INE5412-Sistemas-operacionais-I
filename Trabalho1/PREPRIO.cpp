@@ -20,6 +20,7 @@ bool execute() {
 
     if (is_ready_queue_empty()) {
         if (is_running_queue_empty()) {
+            return false;
         }
     }
 
