@@ -24,7 +24,7 @@ Process::Process(int c, int d, int p, int i) {
 int Process::getPid() const { return pid; }
 
 // Get creation time
-int Process::getCreationTime() { return creation_time; }
+int Process::getCreationTime() const { return creation_time; }
 
 // Get running time
 int Process::getRunningTime() { return running_time; }
@@ -47,13 +47,13 @@ int Process::getState() { return state; }
 void Process::setState(ProcessState state) { this->state = state; }
 
 // Get duration
-int Process::getDuration() { return duration; }
+int Process::getDuration() const { return duration; }
 
 // Set duration
 void Process::setDuration(int duration) { this->duration = duration; }
 
 // Get priority
-int Process::getPriority() { return priority; }
+int Process::getPriority() const { return priority; }
 
 // Get is finished
 bool Process::is_finished() { return remaining_time = 0; }

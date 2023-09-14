@@ -25,7 +25,7 @@ public:
     int getPid() const;
 
 	// Get creation time
-    int getCreationTime();
+    int getCreationTime() const;
 
     // Get running time
     int getRunningTime();
@@ -43,7 +43,7 @@ public:
     int getFinishTime();
 
 	// Get duration
-    int getDuration();
+    int getDuration() const;
 
     // Set Duration
     void setDuration(int duration);
@@ -55,7 +55,7 @@ public:
     void setState(ProcessState state);
 
 	// Get priority
-	int getPriority();
+	int getPriority() const;
 
     // Get context
     Context* getContext();

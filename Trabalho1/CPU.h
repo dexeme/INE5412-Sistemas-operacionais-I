@@ -56,6 +56,8 @@ class CPU {
 
             int remainingTime = processo.getRemainingTime();
 
+            idle = true;
+
             return {remainingTime, quantumTime};
         }
 

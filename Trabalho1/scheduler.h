@@ -65,9 +65,6 @@ public:
 
             return ready_queue.front();
         } else {
-            // Lida com a situação em que a fila de prontos está vazia.
-            // Isso pode envolver gerar um erro, lançar uma exceção ou tomar outra ação apropriada.
-            // Neste exemplo, estamos lançando uma exceção para indicar a fila vazia.
             throw std::runtime_error("A fila de prontos está vazia.");
         }
     }
@@ -90,44 +87,40 @@ public:
     queue<Process> get_new_queue() {return new_queue;}
 
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
-    void  organize_ready_queue(queue<Process> ready_queue, unsigned int scheduler_type) {
-    vector<Process> processos;
-    while (!ready_queue.empty()) {
-        processos.push_back(ready_queue.front());
-        ready_queue.pop();
+    void organize_ready_queue(queue<Process>& ready_queue, unsigned int scheduler_type) {
+        vector<Process> processos;
+        
+        // Transferir os processos da fila para o vetor
+        while (!ready_queue.empty()) {
+            processos.push_back(ready_queue.front());
+            ready_queue.pop();
+        }
+        
+        // Organizar o vetor com base no tipo de escalonamento
+        if (scheduler_type == 0) {
+            // Ordenar por ordem de chegada
+            sort(processos.begin(), processos.end(), [](const Process& a, const Process& b) {
+                return a.getCreationTime() < b.getCreationTime();
+            });
+        } else if (scheduler_type == 1) {
+            // Ordenar por duração (SJF)
+            sort(processos.begin(), processos.end(), [](const Process& a, const Process& b) {
+                return a.getDuration() < b.getDuration();
+            });
+        } else if (scheduler_type == 2 || scheduler_type == 3) {
+            // Ordenar por prioridade (PREPRIO ou PREPRIOD)
+            sort(processos.begin(), processos.end(), [](const Process& a, const Process& b) {
+                return a.getPriority() > b.getPriority();
+            });
+        }
+        
+        // Transferir os processos de volta para a fila
+        for (const Process& processo : processos) {
+            ready_queue.push(processo);
+        }
     }
-    if (scheduler_type == 0) {
-        // Ordena a fila de prontos por ordem de chegada
-        sort(processos.begin(), processos.end(), [](Process a, Process b) {
-            return a.getCreationTime() < b.getCreationTime();
-        });
-    }
-    if (scheduler_type == 1) {
-        // Ordena a fila de prontos por ordem de chegada
-        sort(processos.begin(), processos.end(), [](Process a, Process b) {
-            return a.getDuration() < b.getDuration();
-        });
-    }
-    if (scheduler_type == 4) {
-        return;
-    }
-    if (scheduler_type == 2) {
-        // Ordena a fila de prontos por ordem de chegada
-        sort(processos.begin(), processos.end(), [](Process a, Process b) {
-            return a.getPriority() > b.getPriority();
-        });
-    }
-    if (scheduler_type == 3) {
-        // Ordena a fila de prontos por ordem de chegada
-        sort(processos.begin(), processos.end(), [](Process a, Process b) {
-            return a.getPriority() > b.getPriority();
-        });
-    }
-    for (Process processo : processos) {
-        ready_queue.push(processo);
-    }
-    set_ready_queue(ready_queue);
-    }
+
+
 
 
 

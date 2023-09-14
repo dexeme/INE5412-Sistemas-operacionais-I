@@ -13,90 +13,60 @@ public:
     ~PREPRIO() {}
 
 bool execute() {
-
     clear_finished_queue();
     CPU &cpu = get_cpu();
-    queue<Process>& fila_de_prontos = get_ready_queue();
-    queue<Process>& fila_de_executando = get_running_queue();
+    queue<Process> &fila_de_prontos = get_ready_queue();
+    queue<Process> &fila_de_executando = get_running_queue();
 
-    if (fila_de_executando.empty()) { // Se o processo atual é nulo
-        if (is_ready_queue_empty()) {
-            cout << "Fila de prontos vazia, executando ultimo processo" << endl;
+    if (is_ready_queue_empty()) {
+        if (is_running_queue_empty()) {
         }
     }
-    if (is_running_queue_empty()) { // Se o processo atual é nulo
-        if (is_ready_queue_empty()) {
+
+    if (!is_running_queue_empty()) {
+        Process &processo_atual = fila_de_executando.front();
+        if (!is_ready_queue_empty()) {
+            Process &proximo_processo = fila_de_prontos.front();
+            if (proximo_processo.getPriority() < processo_atual.getPriority()) {
+                // Preempção: O próximo processo tem prioridade mais alta
+                switch_process(processo_atual, proximo_processo);
+                fila_de_prontos.push(processo_atual);
+                fila_de_executando.pop();
+                fila_de_executando.push(proximo_processo);
+                fila_de_prontos.pop();
+                auto [remaining_time, quantum_time] = cpu.run_process(fila_de_executando.front(), cpu);
+                fila_de_executando.front().setRemainingTime(remaining_time);
+                fila_de_executando.front().setCurrentQuantum(quantum_time);
+                if (remaining_time == 0) {
+                    finish_process(fila_de_executando.front());
+                }
+                return true; // Houve preempção, continue com o próximo processo
+            }
         }
-
-        Process& proximo_processo = get_next_process();
-        queue<Process>& running_queue = get_running_queue();
-        queue<Process>& ready_queue = get_ready_queue();
-
-        running_queue.push(proximo_processo);
-        ready_queue.pop();
-
-        set_running_queue(running_queue);
-        set_ready_queue(ready_queue);
-
-
-        auto [remaining_time, quantum_time] = cpu.run_process(fila_de_executando.front(), cpu); // Executa o próximo processo na CPU
-        
-        // Atualize o tempo restante do processo atual
-        fila_de_executando.front().setRemainingTime(remaining_time);
-        fila_de_executando.front().setCurrentQuantum(quantum_time);
-        
+        // Não houve preempção, execute apenas o processo atual
+        auto [remaining_time, quantum_time] = cpu.run_process(processo_atual, cpu);
+        processo_atual.setRemainingTime(remaining_time);
+        processo_atual.setCurrentQuantum(quantum_time);
         if (remaining_time == 0) {
-            finish_process(fila_de_executando.front()); // Se o processo terminou, finaliza ele
+            finish_process(processo_atual);
         }
-        return !is_ready_queue_empty(); // Retorna se a fila de prontos está vazia, para saber se o escalonador terminou
-    }
-    
-    // Parte da preempção
-    if (!is_ready_queue_empty()) {
-        Process& proximo_processo = fila_de_prontos.front();
-        int prioridade_processo_atual = fila_de_executando.front().getPriority();
-        int prioridade_proximo_processo = fila_de_prontos.front().getPriority();
-
-        if (prioridade_processo_atual < prioridade_proximo_processo) {
-            switch_process(fila_de_executando.front(), fila_de_prontos.front());
-
-            // seta o quantum do processo atual para 0
-            fila_de_executando.front().setCurrentQuantum(0);
-
-            // remove o processo atual da fila de executando e coloca ele na fila de prontos
-                        
-            fila_de_prontos.push(fila_de_executando.front());
-            fila_de_executando.push(proximo_processo);
-            fila_de_prontos.pop();
-            fila_de_executando.pop();
-            set_running_queue(fila_de_executando);
-            set_ready_queue(fila_de_prontos);
-            }
-            auto [remaining_time, quantum_time] = cpu.run_process(fila_de_executando.front(), cpu); // Executa o próximo processo na CPU
-            
-            // Atualize o tempo restante do processo atual
-            fila_de_executando.front().setRemainingTime(remaining_time);
-            fila_de_executando.front().setCurrentQuantum(quantum_time);
-            
-            if (remaining_time == 0) {
-                finish_process(fila_de_executando.front()); // Se o processo terminou, finaliza ele
-            }
-
-            return !is_ready_queue_empty();
     } else {
-        // Se não houver preempção, execute apenas o processo atual
+        // Se não há processo em execução, inicie um novo
+        Process &proximo_processo = get_next_process();
+        fila_de_executando.push(proximo_processo);
+        fila_de_prontos.pop();
         auto [remaining_time, quantum_time] = cpu.run_process(fila_de_executando.front(), cpu);
-
         fila_de_executando.front().setRemainingTime(remaining_time);
         fila_de_executando.front().setCurrentQuantum(quantum_time);
-        
         if (remaining_time == 0) {
             finish_process(fila_de_executando.front());
         }
     }
-    
-    return false;
+
+    return true; // Continuar a execução do escalonador
 }
+
+
 
     bool check_preemption(Process processo_atual) {} // TODO: Implementar preempção
 
