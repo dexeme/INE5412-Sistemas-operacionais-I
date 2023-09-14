@@ -61,10 +61,20 @@ public:
     // • Diagrama de tempo de execução.
 
     void print_process_information(queue<Process> ready_to_print_info) {
+        int total_turnaround_time = 0;
+        int total_process = 0;
         cout << "Processo  Turnaround time" << endl;
         while (!ready_to_print_info.empty()) {
+            total_turnaround_time += ready_to_print_info.front().getFinishTime() + 1;
+            total_process++;
             cout << setw(8) << left << ready_to_print_info.front().getPid() << setw(10) << right << ready_to_print_info.front().getFinishTime() + 1 << setw(24) << right << endl;
             ready_to_print_info.pop();
         }
+        cout << "Tempo médio de turnaround: " << total_turnaround_time / total_process << endl;
+
+    }
+
+    void print_total_context_changes(int total_context_changes) {
+        cout << "Total de trocas de contexto: " << total_context_changes << endl;
     }
 };

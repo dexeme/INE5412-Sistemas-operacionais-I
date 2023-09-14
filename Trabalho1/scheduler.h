@@ -21,7 +21,7 @@ private:
     Process* current_process;
     CPU& cpu;
     int current_time;
-
+    int total_context_changes;
 
 public:
 
@@ -29,6 +29,8 @@ public:
     Scheduler(CPU& _cpu) : cpu(_cpu), current_process(nullptr) {}
 
     int get_current_time() { return current_time; }
+
+    int get_total_context_changes() { return total_context_changes; }
 
     void set_current_time(int time) { current_time = time; }
 
@@ -134,7 +136,8 @@ public:
 
 
     void switch_process(Process& processo_atual, Process& processo_novo) {
-
+        // Incrementa o número de trocas de contexto
+        total_context_changes++;
         processo_novo.setState(RUNNING);
         processo_atual.setState(READY);
         processo_atual.setDuration(processo_atual.getRemainingTime());

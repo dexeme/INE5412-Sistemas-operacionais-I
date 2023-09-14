@@ -114,6 +114,7 @@ void Kernel::start_scheduler(unsigned int scheduler_type)
         
     }
     output.print_process_information(scheduler->get_ready_to_print_info());
+    output.print_total_context_changes(scheduler->get_total_context_changes());
 
 }
 
