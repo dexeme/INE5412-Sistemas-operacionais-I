@@ -14,9 +14,9 @@ using namespace std;
 class Kernel {
     private:
         CPU* cpu;
+        Scheduler* scheduler;
 
     public:
-        Scheduler* scheduler;
 
         Kernel() {}
 

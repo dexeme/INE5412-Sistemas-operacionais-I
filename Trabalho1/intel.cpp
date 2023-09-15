@@ -11,9 +11,4 @@ public:
     Intel() {}
 
     ~Intel() {}
-
-    void virtual save_context() {}
-    void virtual restore_context() {}
-    void virtual switch_context() {}
-    
 };
