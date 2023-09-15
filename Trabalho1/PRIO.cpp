@@ -15,7 +15,7 @@ public:
     // 4 2 1 3
 bool execute() {
 
-    Process* processo_atual = get_current_process();
+Process* processo_atual = get_current_process();
     CPU &cpu = get_cpu();
     clear_finished_queue();
     queue<Process>& fila_de_prontos = get_ready_queue();
