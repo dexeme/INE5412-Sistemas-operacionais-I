@@ -67,8 +67,4 @@ bool execute() {
 
     // Restante do código para o caso em que há um processo em execução
 
-
-
-    bool check_preemption(Process processo_atual) { return false; } // FCFS não tem preempção
-
 };

@@ -64,8 +64,6 @@ bool execute() {
         return false;
     }
 
-    bool check_preemption(Process& processo_atual) { return false; } // Sem preempção
-
 };
 
 

@@ -65,6 +65,4 @@ Process* processo_atual = get_current_process();
     }
 
 
-    bool check_preemption(Process processo_atual) { return false; } // Sem preempção
-
 };

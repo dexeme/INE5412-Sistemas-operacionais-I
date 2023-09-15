@@ -97,9 +97,4 @@ bool execute() {
     return true;
 }
 
-
-    
-
-    bool check_preemption(Process processo_atual) {} // TODO: Implementar preempção
-
 };
