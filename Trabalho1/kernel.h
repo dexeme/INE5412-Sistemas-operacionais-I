@@ -22,7 +22,7 @@ class Kernel {
 
         void start(unsigned int scheduler_type);
         
-        Process create_process(ProcessParams p);
+        Process create_process(ProcessParams params);
 
         void create_scheduler(unsigned int scheduler_type);
         void start_scheduler(unsigned int scheduler_type);
