@@ -15,9 +15,5 @@ public:
     ARM() {}
 
     ~ARM() {}
-
-    void save_context(Process processo) override {}
-    void restore_context(Process processo) override {}
-    void switch_context(Process processo_atual, Process processo_novo) override {}
     
 };
