@@ -88,38 +88,40 @@ public:
 
 
     // organiza a fila de prontos de acordo com o algoritmo de escalonamento
-    void organize_ready_queue(queue<Process>& ready_queue, unsigned int scheduler_type) {
-        vector<Process> processos;
-        
-        // Transferir os processos da fila para o vetor
-        while (!ready_queue.empty()) {
-            processos.push_back(ready_queue.front());
-            ready_queue.pop();
-        }
-        
-        // Organizar o vetor com base no tipo de escalonamento
-        if (scheduler_type == 0) {
-            // Ordenar por ordem de chegada
-            sort(processos.begin(), processos.end(), [](const Process& a, const Process& b) {
-                return a.getCreationTime() < b.getCreationTime();
-            });
-        } else if (scheduler_type == 1) {
-            // Ordenar por duração (SJF)
-            sort(processos.begin(), processos.end(), [](const Process& a, const Process& b) {
-                return a.getDuration() < b.getDuration();
-            });
-        } else if (scheduler_type == 2 || scheduler_type == 3) {
-            // Ordenar por prioridade (PREPRIO ou PREPRIOD)
-            sort(processos.begin(), processos.end(), [](const Process& a, const Process& b) {
-                return a.getPriority() > b.getPriority();
-            });
-        }
-        
-        // Transferir os processos de volta para a fila
-        for (const Process& processo : processos) {
-            ready_queue.push(processo);
-        }
+void organize_ready_queue(queue<Process>& ready_queue, unsigned int scheduler_type) {
+    vector<Process> processos;
+    
+    // Transferir os processos da fila para o vetor
+    while (!ready_queue.empty()) {
+        processos.push_back(ready_queue.front());
+        ready_queue.pop();
     }
+
+    // Função de comparação personalizada para cada tipo de escalonamento
+    auto compare_function = [](const Process& a, const Process& b, unsigned int scheduler_type) {
+        switch (scheduler_type) {
+            case 0: // Ordenar por ordem de chegada
+                return a.getCreationTime() < b.getCreationTime();
+            case 1: // Ordenar por duração (SJF)
+                return a.getDuration() < b.getDuration();
+            case 2: // Ordenar por prioridade (PREPRIO)
+            case 3: // Ordenar por prioridade (PREPRIOD)
+                return a.getPriority() > b.getPriority();
+            default:
+                return false;
+        }
+    };
+
+    // Organizar o vetor com base no tipo de escalonamento
+    sort(processos.begin(), processos.end(), [&](const Process& a, const Process& b) {
+        return compare_function(a, b, scheduler_type);
+    });
+
+    // Transferir os processos de volta para a fila
+    for (const Process& processo : processos) {
+        ready_queue.push(processo);
+    }
+}
 
 
 
