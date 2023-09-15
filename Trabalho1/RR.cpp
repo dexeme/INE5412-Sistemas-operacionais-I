@@ -94,7 +94,7 @@ bool execute() {
         }
     }
     
-    return false;
+    return true;
 }
 
 
